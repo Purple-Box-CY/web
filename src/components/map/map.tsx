@@ -6,6 +6,9 @@ import CurrentLocationMarker from "./markers/currentLocationMarker";
 
 interface MapProps {}
 
+export const DEFAULT_LNG = 33.043203321639744;
+export const DEFAULT_LAT = 34.671290150121045;
+
 const MapComponent = (props: MapProps) => {
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
@@ -47,19 +50,25 @@ const MapComponent = (props: MapProps) => {
               lat: userLocation?.latitude ?? 34.671290150121045,
               lng: userLocation?.longitude ?? 33.043203321639744,
             }}
-            defaultZoom={12}
+            defaultZoom={13}
             mapId={process.env.REACT_APP_GOOGLE_MAP_ID}
           >
-            {mapItems.map((item) => {
+            {mapItems.map((item, index) => {
               return (
                 <CustomAdvancedMarker
-                  latitude={item.location?.lat ?? 33.043203321639744}
-                  longitude={item.location?.lng ?? 34.671290150121045}
+                  key={index}
+                  latitude={item.location?.lat ?? DEFAULT_LAT}
+                  longitude={item.location?.lng ?? DEFAULT_LNG}
                   type={item.type}
                 />
               );
             })}
-            <CurrentLocationMarker width={24} height={24} />
+            <CurrentLocationMarker
+              width={24}
+              height={24}
+              longitude={userLocation?.longitude ?? DEFAULT_LNG}
+              latitude={userLocation?.latitude ?? DEFAULT_LAT}
+            />
           </Map>
         </APIProvider>
       )}
