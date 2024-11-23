@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { AdvancedMarker } from "@vis.gl/react-google-maps";
+import { AdvancedMarker, InfoWindow } from "@vis.gl/react-google-maps";
 import { CollectionCategory } from "../../data/map";
 import { ReactComponent as PaperMarkerIcon } from "../../assets/paper.svg";
 import { ReactComponent as PlasticMarkerIcon } from "../../assets/plastic.svg";
@@ -14,12 +14,18 @@ interface Props {
   latitude: number;
   longitude: number;
   type: CollectionCategory;
+  id: string;
+  openedInfoId: string | null;
+  setOpenedInfoId: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export const CustomAdvancedMarker: FunctionComponent<Props> = ({
   latitude,
   longitude,
   type,
+  id,
+  setOpenedInfoId,
+  openedInfoId,
 }) => {
   const position = {
     lat: latitude,
@@ -49,8 +55,23 @@ export const CustomAdvancedMarker: FunctionComponent<Props> = ({
 
   return (
     <>
-      <AdvancedMarker position={position} title={"current location"}>
+      <AdvancedMarker
+        onClick={() => {
+          setOpenedInfoId(id);
+        }}
+        position={position}
+        title={"current location"}
+      >
         {renderMarker()}
+
+        {openedInfoId === id && (
+          <InfoWindow position={position} maxWidth={200}>
+            <p>
+              This is the content for another infowindow with <em>HTML</em>
+              -elements.
+            </p>
+          </InfoWindow>
+        )}
       </AdvancedMarker>
     </>
   );

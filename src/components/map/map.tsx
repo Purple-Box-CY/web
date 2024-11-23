@@ -1,6 +1,6 @@
-import { APIProvider, Map } from "@vis.gl/react-google-maps";
-import React, { useEffect, useState } from "react";
-import { mapItems } from "../../data/map";
+import {APIProvider, InfoWindow, Map} from "@vis.gl/react-google-maps";
+import React, { useCallback, useEffect, useState } from "react";
+import { IMapItem, mapItems } from "../../data/map";
 import { CustomAdvancedMarker } from "./marker";
 import CurrentLocationMarker from "./markers/currentLocationMarker";
 
@@ -15,6 +15,11 @@ const MapComponent = (props: MapProps) => {
     longitude: number;
   } | null>(null);
 
+  const [selectedMarker, setSelectedMarker] = useState<IMapItem | null>(null);
+
+  const onMarkerClick = (marker: IMapItem) => {
+    setSelectedMarker(marker);
+  };
   // TODO detect current user position
   // const getUserLocation = () => {
   //   if (navigator.geolocation) {
@@ -40,6 +45,9 @@ const MapComponent = (props: MapProps) => {
   //   }, 1000);
   // }, []);
 
+  const [openedInfoId, setOpenedInfoId] = useState<string | null>(null);
+
+
   return (
     <div className={"text-3xl h-svh"}>
       {process.env.REACT_APP_GOOGLE_MAP_KEY && (
@@ -58,12 +66,21 @@ const MapComponent = (props: MapProps) => {
           >
             {mapItems.map((item, index) => {
               return (
-                <CustomAdvancedMarker
-                  key={index}
-                  latitude={item.location?.lat ?? DEFAULT_LAT}
-                  longitude={item.location?.lng ?? DEFAULT_LNG}
-                  type={item.type}
-                />
+                <div
+                  onClick={() => {
+                    onMarkerClick(item);
+                  }}
+                >
+                  <CustomAdvancedMarker
+                    key={index}
+                    id={item.id}
+                    latitude={item.location?.lat ?? DEFAULT_LAT}
+                    longitude={item.location?.lng ?? DEFAULT_LNG}
+                    type={item.type}
+                    openedInfoId={openedInfoId}
+                    setOpenedInfoId={setOpenedInfoId}
+                  />
+                </div>
               );
             })}
             <CurrentLocationMarker
