@@ -57,17 +57,6 @@ const Menu = (props: MenuProps) => {
         </h3>
       </NavLink>
       <NavLink
-        to={"/camera"}
-        className={` flex flex-col justify-center items-center rounded-[12px] w-[50px] h-[50px] ${isScanItemActive && "bg-[#A531B5]"}`}
-      >
-        {isScanItemActive ? <CameraItemOn /> : <CameraItem />}
-        <h3
-          className={`text-[10px] font-bold ${isScanItemActive ? "text-[#fff]" : "text-[#222]"}`}
-        >
-          SCAN
-        </h3>
-      </NavLink>
-      <NavLink
         to={"/profile"}
         className={` flex flex-col justify-center items-center rounded-[12px] w-[50px] h-[50px] ${isProfileItemActive && "bg-[#A531B5]"}`}
       >
@@ -76,6 +65,17 @@ const Menu = (props: MenuProps) => {
           className={`text-[10px] font-bold ${isProfileItemActive ? "text-[#fff]" : "text-[#222]"}`}
         >
           PROFILE
+        </h3>
+      </NavLink>
+      <NavLink
+        to={"/camera"}
+        className={` flex flex-col justify-center items-center rounded-[12px] w-[50px] h-[50px] ${isScanItemActive && "bg-[#A531B5]"}`}
+      >
+        {isScanItemActive ? <CameraItemOn /> : <CameraItem />}
+        <h3
+          className={`text-[10px] font-bold ${isScanItemActive ? "text-[#fff]" : "text-[#222]"}`}
+        >
+          SCAN
         </h3>
       </NavLink>
     </div>
