@@ -50,8 +50,8 @@ const MapComponent = (props: MapProps) => {
           <Map
             className={"h-full"}
             defaultCenter={{
-              lat: userLocation?.latitude ?? 34.671290150121045,
-              lng: userLocation?.longitude ?? 33.043203321639744,
+              lat: userLocation?.latitude ?? DEFAULT_LAT,
+              lng: userLocation?.longitude ?? DEFAULT_LNG,
             }}
             defaultZoom={13}
             mapId={process.env.REACT_APP_GOOGLE_MAP_ID}
