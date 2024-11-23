@@ -1,7 +1,7 @@
 export enum CollectionCategory {
   Paper = "Paper (brown)",
   Glass = "Glass (blue)",
-  Plastic = "Cloth (purple)",
+  Plastic = "Plastic (green)",
   Cloth = "Cloth (purple)",
   Electronic = "Electronic devices (white)",
   Battery = "Batteries (white)",
@@ -25,8 +25,8 @@ export const mapItems: IMapItem[] = [
     description:
       "Recycling Batteries Clothing Electronics Ink cartridges Light bulbs Metal cans Plastic bags",
     location: {
-      lat: 34.79006094745252,
-      lng: 32.418863693095325,
+      lat: 34.67802449731142,
+      lng: 33.01526723277956,
     },
     name: "Chloraka Green Point Recycling Centre",
   },
@@ -35,8 +35,8 @@ export const mapItems: IMapItem[] = [
     description:
       "Recycling Batteries Clothing Electronics Ink cartridges Light bulbs Metal cans Plastic bags",
     location: {
-      lat: 34.69151792256484,
-      lng: 33.050757456679,
+      lat: 34.68932230831855,
+      lng: 33.02293396003386,
     },
     name: "Chloraka Green Point Recycling Centre",
   },
