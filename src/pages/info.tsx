@@ -1,40 +1,95 @@
 import Menu from "../components/menu/menu";
 import React from "react";
-import exampleImg from "../assets/purplebox-example.png";
 import { NavLink } from "react-router";
+import blue from "../assets/03_blue.png";
+import green from "../assets/05_green.png";
+import brown from "../assets/02_brown.png";
+import purple from "../assets/01_purple.png";
+import white_electronics from "../assets/08_white.png";
+import white_bataries from "../assets/07_white.png";
+import green_point from "../assets/09_green.png";
+import red from "../assets/06_red.png";
+
+const articles = [
+  {
+    alias: "paper-box",
+    img: brown,
+    title: "This category can be identified by its BROWN Bins",
+    description:
+      "Please use those bins for disposing Paper material.\n" +
+      "If your area is part of the recycling program and recycling material is picked up every week, then please dispose the Paper material into brown garbage bags.",
+  },
+  {
+    alias: "blue-box",
+    img: blue,
+    title: "This category can be identified by its BLUE Bins",
+    description:
+      "Please use those bins for disposing PMD material.\n" +
+      "If your area is part of the recycling program and recycling material is picked up every week, then please dispose the PMD material into transparent garbage bags.",
+  },
+  {
+    alias: "green-box",
+    img: green,
+    title: "Green Box",
+    description:
+      "The Green Recycling Bin in Cyprus is part of the city’s initiative to promote sustainable waste management by encouraging the proper disposal of glass materials.",
+  },
+  {
+    alias: "purple-box",
+    img: purple,
+    title: "Purple box",
+    description:
+      "The Purple Recycling Bins in Cyprus are dedicated to the collection of textiles and clothing, providing an eco-friendly solution for disposing of unwanted garments and fabrics.",
+  },
+  {
+    alias: "white-box",
+    img: white_electronics,
+    title: "White box",
+    description:
+      "The Recycling Bins for Electrical and Electronic Equipment (EEE) in Cyprus are designated for the proper disposal of unwanted or non-functional electronic devices and appliances.",
+  },
+  {
+    alias: "batteries-box",
+    img: white_bataries,
+    title: "Batteries box",
+    description:
+      "The Battery Recycling Bins in Cyprus are designed for the safe collection and disposal of used batteries.",
+  },
+  {
+    alias: "green-points",
+    img: green_point,
+    title: "Green Points",
+    description:
+      "Green Points in Cyprus are specialized waste collection facilities designed to handle materials that are not suitable for regular waste bins or traditional recycling programs.",
+  },
+  {
+    alias: "multi-boxes",
+    img: red,
+    title: "Multiboxes",
+    description: "Multibox is set of any boxes",
+  },
+];
 
 const InfoPage = () => {
   return (
-    <div className={"h-svh bg-white flex flex-col items-center"}>
-      <NavLink
-        to={"/info/first"}
-        className="p-4 rounded overflow-hidden shadow-lg cursor-pointer hover:opacity-[0.9]"
-      >
-        <img
-          className="w-full"
-          src={exampleImg}
-          alt="Sunset in the mountains"
-        />
-        <div className="px-6 py-4">
-          <div className="font-bold text-xl mb-2">The Coldest Sunset</div>
-          <p className="text-gray-700 text-base">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            Voluptatibus quia, nulla! Maiores et perferendis eaque,
-            exercitationem praesentium nihil.
-          </p>
-        </div>
-        <div className="px-6 pt-4 pb-2">
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-            #photography
-          </span>
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-            #travel
-          </span>
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-            #winter
-          </span>
-        </div>
-      </NavLink>
+    <div className={"min-h-svh bg-white flex flex-col items-center pb-[80px]"}>
+      {articles.map((articleItem) => {
+        return (
+          <NavLink
+            key={articleItem.alias}
+            to={`/info/${articleItem.alias}`}
+            className="p-4 rounded overflow-hidden shadow-lg cursor-pointer hover:opacity-[0.9]"
+          >
+            <img className="w-full" src={articleItem.img} alt="box image" />
+            <div className="px-6 py-4">
+              <div className="font-bold text-xl mb-2"> {articleItem.title}</div>
+              <p className="text-gray-700 text-base">
+                {articleItem.description}
+              </p>
+            </div>
+          </NavLink>
+        );
+      })}
       <Menu />
     </div>
   );

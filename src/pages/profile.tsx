@@ -20,7 +20,7 @@ const ProfilePage = () => {
           <div className="mt-6 flex justify-between items-center p-4 rounded-lg">
             <div className="text-center">
               <p className="text-lg font-bold">128</p>
-              <p className="text-sm text-gray-600">Save trees</p>
+              <p className="text-sm text-gray-600">save trees</p>
             </div>
             <div className="text-center">
               <p className="text-lg font-bold">50</p>

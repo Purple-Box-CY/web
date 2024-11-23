@@ -20,7 +20,7 @@ const InfoItemPage = () => {
   }, [id]);
 
   return (
-    <div className={"h-svh bg-white relative"}>
+    <div className={"h-svh bg-white relative overflow-y-scroll pb-[60px]"}>
       <header className={"flex justify-center min-h-[30px] p-2"}>
         <button
           onClick={() => {
@@ -36,7 +36,11 @@ const InfoItemPage = () => {
         </h2>
       </header>
 
-      <article className={"p-2"}>{article?.description}</article>
+      <article className={"p-2"}>
+        {article?.description && (
+          <div dangerouslySetInnerHTML={{ __html: article?.description }}></div>
+        )}
+      </article>
 
       <Menu />
     </div>
