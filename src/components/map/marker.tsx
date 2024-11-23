@@ -14,6 +14,7 @@ interface Props {
   latitude: number;
   longitude: number;
   type: CollectionCategory;
+  description: string;
   id: string;
   openedInfoId: string | null;
   setOpenedInfoId: React.Dispatch<React.SetStateAction<string | null>>;
@@ -23,6 +24,7 @@ export const CustomAdvancedMarker: FunctionComponent<Props> = ({
   latitude,
   longitude,
   type,
+  description,
   id,
   setOpenedInfoId,
   openedInfoId,
@@ -65,11 +67,15 @@ export const CustomAdvancedMarker: FunctionComponent<Props> = ({
         {renderMarker()}
 
         {openedInfoId === id && (
-          <InfoWindow position={position} maxWidth={200}>
-            <p>
-              This is the content for another infowindow with <em>HTML</em>
-              -elements.
-            </p>
+          <InfoWindow
+            onClose={() => {
+              setOpenedInfoId(null);
+            }}
+            position={position}
+            maxWidth={200}
+          >
+            <p>{description}</p>
+            <p className={"font-bold"}>{type}</p>
           </InfoWindow>
         )}
       </AdvancedMarker>

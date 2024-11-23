@@ -77,6 +77,7 @@ const MapComponent = (props: MapProps) => {
                     latitude={item.location?.lat ?? DEFAULT_LAT}
                     longitude={item.location?.lng ?? DEFAULT_LNG}
                     type={item.type}
+                    description={item.description}
                     openedInfoId={openedInfoId}
                     setOpenedInfoId={setOpenedInfoId}
                   />
