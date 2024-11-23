@@ -10,6 +10,7 @@ export enum CollectionCategory {
 }
 
 export interface IMapItem {
+  id: string;
   type: CollectionCategory;
   name: string;
   description: string;
@@ -21,6 +22,7 @@ export interface IMapItem {
 
 export const mapItems: IMapItem[] = [
   {
+    id: "1",
     type: CollectionCategory.GreenPoint,
     description:
       "Recycling Batteries Clothing Electronics Ink cartridges Light bulbs Metal cans Plastic bags",
@@ -31,6 +33,7 @@ export const mapItems: IMapItem[] = [
     name: "Chloraka Green Point Recycling Centre",
   },
   {
+    id: "2",
     type: CollectionCategory.Cloth,
     description:
       "Recycling Batteries Clothing Electronics Ink cartridges Light bulbs Metal cans Plastic bags",
@@ -41,6 +44,7 @@ export const mapItems: IMapItem[] = [
     name: "Chloraka Green Point Recycling Centre",
   },
   {
+    id: "3",
     type: CollectionCategory.Plastic,
     description:
       "Recycling Batteries Clothing Electronics Ink cartridges Light bulbs Metal cans Plastic bags",
@@ -51,6 +55,7 @@ export const mapItems: IMapItem[] = [
     name: "Chloraka Green Point Recycling Centre",
   },
   {
+    id: "4",
     type: CollectionCategory.Multibox,
     description:
       "Recycling Batteries Clothing Electronics Ink cartridges Light bulbs Metal cans Plastic bags",
@@ -61,6 +66,7 @@ export const mapItems: IMapItem[] = [
     name: "Chloraka Green Point Recycling Centre",
   },
   {
+    id: "5",
     type: CollectionCategory.Paper,
     description:
       "Recycling Batteries Clothing Electronics Ink cartridges Light bulbs Metal cans Plastic bags",
@@ -71,6 +77,7 @@ export const mapItems: IMapItem[] = [
     name: "Chloraka Green Point Recycling Centre",
   },
   {
+    id: "6",
     type: CollectionCategory.Glass,
     description:
       "Recycling Batteries Clothing Electronics Ink cartridges Light bulbs Metal cans Plastic bags",
@@ -81,6 +88,7 @@ export const mapItems: IMapItem[] = [
     name: "Chloraka Green Point Recycling Centre",
   },
   {
+    id: "7",
     type: CollectionCategory.Electronic,
     description:
       "Recycling Batteries Clothing Electronics Ink cartridges Light bulbs Metal cans Plastic bags",
@@ -91,6 +99,7 @@ export const mapItems: IMapItem[] = [
     name: "Chloraka Green Point Recycling Centre",
   },
   {
+    id: "8",
     type: CollectionCategory.Battery,
     description:
       "Recycling Batteries Clothing Electronics Ink cartridges Light bulbs Metal cans Plastic bags",
