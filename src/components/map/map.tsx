@@ -6,8 +6,8 @@ import CurrentLocationMarker from "./markers/currentLocationMarker";
 
 interface MapProps {}
 
-export const DEFAULT_LNG = 33.043203321639744;
-export const DEFAULT_LAT = 34.671290150121045;
+export const DEFAULT_LNG = 33.02602093610927;
+export const DEFAULT_LAT = 34.663160656079064;
 
 const MapComponent = (props: MapProps) => {
   const [userLocation, setUserLocation] = useState<{
@@ -15,27 +15,30 @@ const MapComponent = (props: MapProps) => {
     longitude: number;
   } | null>(null);
 
-  const getUserLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
+  // TODO detect current user position
+  // const getUserLocation = () => {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         const { latitude, longitude } = position.coords;
+  //
+  //         setUserLocation({ latitude, longitude });
+  //       },
+  //
+  //       (error) => {
+  //         console.error("Error get user location: ", error);
+  //       },
+  //     );
+  //   } else {
+  //     console.log("Geolocation is not supported by this browser");
+  //   }
+  // };
 
-          setUserLocation({ latitude, longitude });
-        },
-
-        (error) => {
-          console.error("Error get user location: ", error);
-        },
-      );
-    } else {
-      console.log("Geolocation is not supported by this browser");
-    }
-  };
-
-  useEffect(() => {
-    getUserLocation();
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     getUserLocation();
+  //   }, 1000);
+  // }, []);
 
   return (
     <div className={"text-3xl h-svh"}>
