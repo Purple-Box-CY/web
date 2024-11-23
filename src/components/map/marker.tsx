@@ -9,6 +9,7 @@ import { ReactComponent as BatteriesMarkerIcon } from "../../assets/batteries.sv
 import { ReactComponent as GlassMarkerIcon } from "../../assets/glass.svg";
 import { ReactComponent as GreenPointsMarkerIcon } from "../../assets/green_points.svg";
 import { ReactComponent as MultiboxMarkerIcon } from "../../assets/multibox.svg";
+import {NavLink} from "react-router";
 
 interface Props {
   latitude: number;
@@ -74,8 +75,10 @@ export const CustomAdvancedMarker: FunctionComponent<Props> = ({
             position={position}
             maxWidth={200}
           >
-            <p>{description}</p>
-            <p className={"font-bold"}>{type}</p>
+            <NavLink to={'/box-item'}>
+              <p className={"mt-4"}>{description}</p>
+              <p className={"font-bold"}>{type}</p>
+            </NavLink>
           </InfoWindow>
         )}
       </AdvancedMarker>

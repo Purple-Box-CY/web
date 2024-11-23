@@ -40,3 +40,8 @@
 .gm-style-iw-t {
   bottom: 35px !important;
 }
+
+.gm-ui-hover-effect {
+  position: absolute !important;
+  right: 0;
+}
