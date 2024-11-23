@@ -1,10 +1,14 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import Webcam from 'react-webcam';
 import { ReactComponent as CancelIcon } from '../assets/close.svg';
 import { ReactComponent as CheckIcon } from '../assets/approve.svg';
 
 const RecognitionBox: React.FC = () => {
     const webcamRef = useRef<Webcam | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false); // Состояние модалки
+    const [isLoading, setIsLoading] = useState(false); // Состояние загрузки
+    const [photo, setPhoto] = useState<string | null>(null); // Сохранённая фотография
+    const [result, setResult] = useState<string | null>(null); // Результат запроса
 
     useEffect(() => {
         const setRealVH = () => {
@@ -20,11 +24,44 @@ const RecognitionBox: React.FC = () => {
         };
     }, []);
 
-    const capturePhoto = () => {
+    const capturePhoto = async () => {
         if (webcamRef.current) {
             const imageSrc = webcamRef.current.getScreenshot();
-            console.log("Captured photo:", imageSrc);
+            if (imageSrc) {
+                setPhoto(imageSrc); // Сохраняем фотографию
+                setIsModalOpen(true); // Открываем модалку
+                setIsLoading(true); // Включаем лоадер
+
+                try {
+                    const response = await fetch('http://your-backend-url/api', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ image: imageSrc }),
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        setResult(data.result); // Устанавливаем результат
+                    } else {
+                        console.error('Error from backend:', response.statusText);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                } finally {
+                    setIsLoading(false); // Отключаем лоадер
+                }
+            }
         }
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false); // Закрываем модалку
+        setPhoto(null); // Сбрасываем фотографию
+        setResult(null); // Сбрасываем результат
+    };
+
+    const retakePhoto = () => {
+        setPhoto(null); // Убираем текущую фотографию
     };
 
     return (
@@ -37,32 +74,37 @@ const RecognitionBox: React.FC = () => {
                 overflow: 'hidden',
             }}
         >
-            {/* Камера */}
-            <Webcam
-                audio={false}
-                ref={webcamRef}
-                screenshotFormat="image/jpeg"
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                }}
-            />
+            {/* Камера или фото */}
+            {photo ? (
+                <img
+                    src={photo}
+                    alt="Captured"
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                    }}
+                />
+            ) : (
+                <Webcam
+                    audio={false}
+                    ref={webcamRef}
+                    screenshotFormat="image/jpeg"
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                    }}
+                />
+            )}
 
-            <div
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    // background: 'rgba(0, 0, 0, 0.7)',
-                    // clipPath: 'inset(20% 10% 20% 10% round 15px)',
-                }}
-            />
+            {/* Рамка */}
             <div
                 style={{
                     position: 'absolute',
@@ -76,6 +118,7 @@ const RecognitionBox: React.FC = () => {
                 }}
             />
 
+            {/* Текст */}
             <div
                 style={{
                     position: 'absolute',
@@ -89,62 +132,119 @@ const RecognitionBox: React.FC = () => {
                     zIndex: 3,
                 }}
             >
-                TAKE A PHOTO OF THE BOX
+                {photo ? 'REVIEW YOUR PHOTO' : 'TAKE A PHOTO OF THE BOX'}
             </div>
 
-            <div
-                style={{
-                    position: 'absolute',
-                    bottom: '5%',
-                    left: 0,
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    padding: '0 20px',
-                    boxSizing: 'border-box',
-                    zIndex: 3,
-                }}
-            >
-                <button
+            {/* Кнопки */}
+            {!isModalOpen && (
+                <div
                     style={{
-                        width: '64px',
-                        height: '64px',
-                        borderRadius: '50%',
-                        border: '2px solid white',
-                        backgroundColor: 'transparent',
-                        color: 'white',
-                        cursor: 'pointer',
+                        position: 'absolute',
+                        bottom: '5%',
+                        left: 0,
+                        width: '100%',
                         display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginLeft: '10px',
+                        justifyContent: 'space-between',
+                        padding: '0 20px',
+                        boxSizing: 'border-box',
+                        zIndex: 3,
                     }}
-                    onClick={() => console.log("Cancelled")}
                 >
-                    <CancelIcon width="32px" height="32px" fill="white" />
-                </button>
+                    <button
+                        style={{
+                            width: '64px',
+                            height: '64px',
+                            borderRadius: '50%',
+                            border: '2px solid white',
+                            backgroundColor: 'transparent',
+                            color: 'white',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                        onClick={retakePhoto}
+                    >
+                        <CancelIcon width="32px" height="32px" fill="white" />
+                    </button>
 
-                <button
+                    <button
+                        style={{
+                            width: '64px',
+                            height: '64px',
+                            borderRadius: '50%',
+                            border: '2px solid white',
+                            backgroundColor: 'white',
+                            color: 'black',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                        onClick={capturePhoto}
+                    >
+                        <CheckIcon width="32px" height="32px" />
+                    </button>
+                </div>
+            )}
+
+            {/* Модалка */}
+            {isModalOpen && (
+                <div
                     style={{
-                        width: '64px',
-                        height: '64px',
-                        borderRadius: '50%',
-                        border: '2px solid white',
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '50%', // Почти весь экран
                         backgroundColor: 'white',
-                        color: 'black',
-                        cursor: 'pointer',
+                        borderTopLeftRadius: '20px',
+                        borderTopRightRadius: '20px',
+                        zIndex: 4,
                         display: 'flex',
-                        alignItems: 'center',
+                        flexDirection: 'column',
                         justifyContent: 'center',
-                        marginRight: '10px',
+                        alignItems: 'center',
+                        padding: '20px',
+                        boxSizing: 'border-box',
                     }}
-                    onClick={capturePhoto}
                 >
-                    <CheckIcon width="32px" height="32px" />
-                </button>
+                    {/* Кнопка закрытия */}
+                    <button
+                        style={{
+                            position: 'absolute',
+                            top: '10px',
+                            right: '10px',
+                            width: '32px',
+                            height: '32px',
+                            border: 'none',
+                            background: 'transparent',
+                            cursor: 'pointer',
+                        }}
+                        onClick={closeModal}
+                    >
+                        <CancelIcon width="32px" height="32px" fill="black" />
+                    </button>
 
-            </div>
-
+                    {isLoading ? (
+                        <div
+                            style={{
+                                width: '50px',
+                                height: '50px',
+                                border: '4px solid #ccc',
+                                borderTop: '4px solid #000',
+                                borderRadius: '50%',
+                                animation: 'spin 1s linear infinite',
+                            }}
+                        ></div>
+                    ) : (
+                        <div>
+                            <h3>Result</h3>
+                            <p>{result || 'No result available'}</p>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 };
