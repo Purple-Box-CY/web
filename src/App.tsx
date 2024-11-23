@@ -7,6 +7,7 @@ import CameraPage from "./pages/camera";
 import ProfilePage from "./pages/profile";
 import InfoPage from "./pages/info";
 import InfoItemPage from "./pages/infoItem";
+import RecognitionBox from "./pages/RecognitionBoxPage";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
           <Route path="/:id" element={<BoxItem />} />
           <Route path="/info" element={<InfoPage />} />
           <Route path="/info/:id" element={<InfoItemPage />} />
-          <Route path="/camera" element={<CameraPage />} />
+          <Route path="/camera" element={<RecognitionBox />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/item" element={<BoxItem />} />
         </Routes>
