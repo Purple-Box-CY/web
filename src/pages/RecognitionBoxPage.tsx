@@ -196,7 +196,7 @@ const RecognitionBox: React.FC = () => {
                         bottom: 0,
                         left: 0,
                         width: '100%',
-                        height: '50%', // Почти весь экран
+                        height: '50%',
                         backgroundColor: 'white',
                         borderTopLeftRadius: '20px',
                         borderTopRightRadius: '20px',
