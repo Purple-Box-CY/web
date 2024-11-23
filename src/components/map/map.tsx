@@ -62,6 +62,7 @@ const MapComponent = (props: MapProps) => {
             }}
             defaultZoom={13}
             mapId={process.env.REACT_APP_GOOGLE_MAP_ID}
+            disableDefaultUI
           >
             {mapItems.map((item, index) => {
               return (
