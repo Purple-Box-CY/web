@@ -1,5 +1,5 @@
-import {APIProvider, InfoWindow, Map} from "@vis.gl/react-google-maps";
-import React, { useCallback, useEffect, useState } from "react";
+import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import React, { useState } from "react";
 import { IMapItem, mapItems } from "../../data/map";
 import { CustomAdvancedMarker } from "./marker";
 import CurrentLocationMarker from "./markers/currentLocationMarker";
@@ -47,9 +47,8 @@ const MapComponent = (props: MapProps) => {
 
   const [openedInfoId, setOpenedInfoId] = useState<string | null>(null);
 
-
   return (
-    <div className={"text-3xl h-svh"}>
+    <div className={"h-svh"}>
       {process.env.REACT_APP_GOOGLE_MAP_KEY && (
         <APIProvider
           apiKey={process.env.REACT_APP_GOOGLE_MAP_KEY}
