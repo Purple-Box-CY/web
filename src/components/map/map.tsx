@@ -67,6 +67,7 @@ const MapComponent = (props: MapProps) => {
             {mapItems.map((item, index) => {
               return (
                 <div
+                  key={item.id}
                   onClick={() => {
                     onMarkerClick(item);
                   }}
