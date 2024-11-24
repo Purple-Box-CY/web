@@ -26,8 +26,8 @@ export const CustomMarker = (props: CustomMarkerProps) => {
   const handleClick = useCallback(() => onClick(mapItem), [onClick, mapItem]);
   const ref = useCallback(
     (marker: google.maps.marker.AdvancedMarkerElement) =>
-      setMarkerRef(marker, mapItem.id),
-    [setMarkerRef, mapItem.id],
+      setMarkerRef(marker, mapItem.uid),
+    [setMarkerRef, mapItem.uid],
   );
 
   const renderMarker = () => {

@@ -20,7 +20,7 @@ export const ClusteredMarkers = ({ mapItems }: ClusteredMarkersProps) => {
   const selectedTree = useMemo(
     () =>
       mapItems && selectedTreeKey
-        ? mapItems.find((t) => t.id === selectedTreeKey)!
+        ? mapItems.find((t) => t.uid === selectedTreeKey)!
         : null,
     [mapItems, selectedTreeKey],
   );
@@ -63,14 +63,14 @@ export const ClusteredMarkers = ({ mapItems }: ClusteredMarkersProps) => {
   }, []);
 
   const handleMarkerClick = useCallback((tree: IMapItem) => {
-    setSelectedTreeKey(tree.id);
+    setSelectedTreeKey(tree.uid);
   }, []);
 
   return (
     <>
       {mapItems.map((mapItem) => (
         <CustomMarker
-          key={mapItem.id}
+          key={mapItem.uid}
           mapItem={mapItem}
           onClick={handleMarkerClick}
           setMarkerRef={setMarkerRef}
