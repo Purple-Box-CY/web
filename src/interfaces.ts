@@ -1,3 +1,5 @@
+import { CollectionCategory } from "./data/map";
+
 export interface IArticle {
   alias: string;
   createdAt: string;
@@ -7,9 +9,10 @@ export interface IArticle {
 }
 
 export interface IBox {
-  alias: string;
-  createdAt: string;
   description: string;
-  title: string;
-  updatedAt: string;
+  imageUrl: string;
+  location: { lat: number; lng: number };
+  name: string;
+  type: CollectionCategory;
+  uid: string;
 }

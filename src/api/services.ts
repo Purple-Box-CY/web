@@ -9,6 +9,10 @@ export const service = {
   getMarkers: async (category: CollectionCategory | null) => {
     return await publicApi.get(`/markers?type=${category}`);
   },
+
+  getMarkerItem: async (markerId: string) => {
+    return await publicApi.get(`/markers/${markerId}`);
+  },
 };
 
 export const camera = {
