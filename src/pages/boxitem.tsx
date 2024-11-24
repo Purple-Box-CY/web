@@ -6,6 +6,13 @@ import { service } from "../api/services";
 import { IBox } from "../interfaces";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
 import { CustomMarker } from "../components/map/customMarker";
+import { CollectionCategory } from "../data/map";
+import { articles, IArticle } from "./info";
+import { NavLink } from "react-router";
+
+const getArticleByType = (type: CollectionCategory): IArticle => {
+  return articles.find((art) => art.type === type) as IArticle;
+};
 
 const BoxItem = () => {
   const { id } = useParams();
@@ -13,6 +20,8 @@ const BoxItem = () => {
   const navigate = useNavigate();
 
   const [box, setBox] = useState<IBox | null>();
+
+  const article = box && getArticleByType(box?.type);
 
   useEffect(() => {
     id &&
@@ -22,7 +31,7 @@ const BoxItem = () => {
   }, [id]);
 
   return (
-    <div className={"h-svh bg-white"}>
+    <div className={"bg-white pb-16"}>
       <header className={"flex justify-center min-h-[30px] p-2"}>
         <button
           onClick={() => {
@@ -70,11 +79,27 @@ const BoxItem = () => {
         </APIProvider>
       )}
 
+      {box?.imageUrl && <img src={box?.imageUrl} alt="" />}
+
       {box?.description && (
         <div
           className={"p-2"}
           dangerouslySetInnerHTML={{ __html: box?.description }}
-        ></div>
+        />
+      )}
+
+      {article && (
+        <NavLink
+          to={`/info/${article.alias}`}
+          className="p-4 rounded overflow-hidden shadow-lg cursor-pointer hover:opacity-[0.9] block m-2 bg-[#A531B510]"
+        >
+          <div className="py-4">
+            <div className="font-bold text-xl mb-2"> {article.title}</div>
+            <p className="text-gray-700 text-base">{article.description}</p>
+          </div>
+
+          <img className="w-full" src={article.img} alt="box image" />
+        </NavLink>
       )}
 
       <Menu />
