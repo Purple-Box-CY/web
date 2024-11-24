@@ -31,7 +31,7 @@ const BoxItem = () => {
   }, [id]);
 
   return (
-    <div className={"bg-white pb-16"}>
+    <div className={"bg-white pb-16 min-h-svh"}>
       <header className={"flex justify-center min-h-[30px] p-2"}>
         <button
           onClick={() => {
