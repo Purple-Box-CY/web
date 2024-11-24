@@ -3,7 +3,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ReactComponent as BackIcon } from "../assets/back_icon.svg";
 import { service } from "../api/services";
-import { IArticle, IBox } from "../interfaces";
+import { IBox } from "../interfaces";
+import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import { CustomMarker } from "../components/map/customMarker";
 
 const BoxItem = () => {
   const { id } = useParams();
@@ -14,33 +16,66 @@ const BoxItem = () => {
 
   useEffect(() => {
     id &&
-      service.getArticleItem(id).then((res) => {
+      service.getMarkerItem(id).then((res) => {
         setBox(res.data);
       });
   }, [id]);
+
   return (
     <div className={"h-svh bg-white"}>
-      <div className={"h-svh bg-white relative"}>
-        <header className={"flex justify-center min-h-[30px] p-2"}>
-          <button
-            onClick={() => {
-              navigate(-1);
+      <header className={"flex justify-center min-h-[30px] p-2"}>
+        <button
+          onClick={() => {
+            navigate(-1);
+          }}
+          className="absolute left-2 active:opacity-[0.8] w-[24px] h-[24px]"
+        >
+          <BackIcon />
+        </button>
+
+        <h2 className={"text-[#222] font-bold text-[20px]"}>{box?.name}</h2>
+      </header>
+
+      {process.env.REACT_APP_GOOGLE_MAP_KEY && (
+        <APIProvider
+          apiKey={process.env.REACT_APP_GOOGLE_MAP_KEY}
+          version={"beta"}
+        >
+          <Map
+            className={"h-[300px]"}
+            center={{
+              lat: box?.location.lat ?? 34.686488571566,
+              lng: box?.location.lng ?? 33.03550530741,
             }}
-            className="absolute left-2 active:opacity-[0.8] w-[24px] h-[24px]"
+            defaultZoom={13}
+            mapId={process.env.REACT_APP_GOOGLE_MAP_ID}
+            disableDefaultUI
           >
-            <BackIcon />
-          </button>
+            {box && (
+              <CustomMarker
+                key={box?.uid}
+                mapItem={{
+                  uid: box.uid,
+                  location: box?.location,
+                  name: box?.name,
+                  type: box?.type,
+                  description: box?.description,
+                }}
+                onClick={() => {}}
+                setMarkerRef={() => {}}
+              />
+            )}
+          </Map>
+        </APIProvider>
+      )}
 
-          <h2 className={"text-[#222] font-bold text-[20px]"}>
-            {/*{article?.title}*/}
-            Purple Box
-          </h2>
-        </header>
+      {box?.description && (
+        <div
+          className={"p-2"}
+          dangerouslySetInnerHTML={{ __html: box?.description }}
+        ></div>
+      )}
 
-        {/*<article className={"p-2"}>{article?.description}</article>*/}
-
-        <Menu />
-      </div>
       <Menu />
     </div>
   );

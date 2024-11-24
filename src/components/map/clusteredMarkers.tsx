@@ -83,7 +83,7 @@ export const ClusteredMarkers = ({ mapItems }: ClusteredMarkersProps) => {
           onCloseClick={handleInfoWindowClose}
           maxWidth={200}
         >
-          <NavLink to={"/box-item"}>
+          <NavLink to={`/${selectedTreeKey}`}>
             <p className={"mt-4"}>{selectedTree?.description}</p>
             <p className={"font-bold"}>{selectedTree?.type}</p>
           </NavLink>
