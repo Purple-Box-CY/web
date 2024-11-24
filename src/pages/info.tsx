@@ -73,10 +73,10 @@ const articles = [
 const InfoPage = () => {
   return (
     <div className={"min-h-svh bg-white flex flex-col items-center pb-[80px]"}>
-      {articles.map((articleItem) => {
+      {articles.map((articleItem, index) => {
         return (
           <NavLink
-            key={articleItem.alias}
+            key={index}
             to={`/info/${articleItem.alias}`}
             className="p-4 rounded overflow-hidden shadow-lg cursor-pointer hover:opacity-[0.9]"
           >
