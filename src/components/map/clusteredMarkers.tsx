@@ -2,8 +2,17 @@ import { InfoWindow, useMap } from "@vis.gl/react-google-maps";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { type Marker, MarkerClusterer } from "@googlemaps/markerclusterer";
 import { CustomMarker } from "./customMarker";
-import { IMapItem } from "../../data/map";
+import { CollectionCategory, IMapItem } from "../../data/map";
 import { NavLink } from "react-router";
+
+import blue from "../../assets/03_blue.png";
+import green from "../../assets/05_green.png";
+import brown from "../../assets/02_brown.png";
+import purple from "../../assets/01_purple.png";
+import white_electronics from "../../assets/08_white.png";
+import white_bataries from "../../assets/07_white.png";
+import green_point from "../../assets/09_green.png";
+import red from "../../assets/06_red.png";
 
 export type ClusteredMarkersProps = {
   mapItems: IMapItem[];
@@ -66,6 +75,27 @@ export const ClusteredMarkers = ({ mapItems }: ClusteredMarkersProps) => {
     setSelectedTreeKey(tree.uid);
   }, []);
 
+  const renderMarker = (type: CollectionCategory) => {
+    switch (type) {
+      case CollectionCategory.Paper:
+        return <img className={"w-[160px]"} src={brown} alt="" />;
+      case CollectionCategory.Plastic:
+        return <img className={"w-[160px]"} src={blue} alt="" />;
+      case CollectionCategory.Electronic:
+        return <img className={"w-[160px]"} src={white_electronics} alt="" />;
+      case CollectionCategory.Cloth:
+        return <img className={"w-[160px]"} src={purple} alt="" />;
+      case CollectionCategory.Multibox:
+        return <img className={"w-[160px]"} src={red} alt="" />;
+      case CollectionCategory.Glass:
+        return <img className={"w-[160px]"} src={green} alt="" />;
+      case CollectionCategory.GreenPoint:
+        return <img className={"w-[160px]"} src={green_point} alt="" />;
+      case CollectionCategory.Battery:
+        return <img className={"w-[160px]"} src={white_bataries} alt="" />;
+    }
+  };
+
   return (
     <>
       {mapItems.map((mapItem) => (
@@ -84,8 +114,13 @@ export const ClusteredMarkers = ({ mapItems }: ClusteredMarkersProps) => {
           maxWidth={200}
         >
           <NavLink to={`/${selectedTreeKey}`}>
-            <p className={"mt-4"}>{selectedTree?.description}</p>
-            <p className={"font-bold"}>{selectedTree?.type}</p>
+            <p className={"mt-4"}>{selectedTree?.name}</p>
+            <p className={"font-bold mt-1"}>{selectedTree?.description}</p>
+
+            <div className={'flex justify-center'}>
+              {selectedTree?.type && renderMarker(selectedTree?.type)}
+            </div>
+
           </NavLink>
         </InfoWindow>
       )}
