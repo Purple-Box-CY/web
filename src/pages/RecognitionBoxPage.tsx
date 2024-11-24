@@ -1,17 +1,17 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import Webcam from 'react-webcam';
-import { ReactComponent as CancelIcon } from '../assets/close.svg';
-import { ReactComponent as CheckIcon } from '../assets/approve.svg';
-import { ReactComponent as CheckSmallIcon } from '../assets/close_small.svg';
-import { ReactComponent as RecogniteIcon } from '../assets/recognite.svg';
+import {ReactComponent as CancelIcon} from '../assets/close.svg';
+import {ReactComponent as CheckIcon} from '../assets/approve.svg';
+import {ReactComponent as CheckSmallIcon} from '../assets/close_small.svg';
+import {ReactComponent as RecogniteIcon} from '../assets/recognite.svg';
 import {camera} from "../api/services";
-import { useNavigate } from "react-router-dom";
-import { ReactComponent as PaperMarkerIcon } from "../assets/paper.svg";
-import { ReactComponent as PlasticMarkerIcon } from "../assets/plastic.svg";
-import { ReactComponent as ClothMarkerIcon } from "../assets/cloth.svg";
-import { ReactComponent as ElectronicDevicesMarkerIcon } from "../assets/electronic_devices.svg";
-import { ReactComponent as BatteriesMarkerIcon } from "../assets/batteries.svg";
-import { ReactComponent as GlassMarkerIcon } from "../assets/glass.svg";
+import {useNavigate} from "react-router-dom";
+import {ReactComponent as PaperMarkerIcon} from "../assets/paper.svg";
+import {ReactComponent as PlasticMarkerIcon} from "../assets/plastic.svg";
+import {ReactComponent as ClothMarkerIcon} from "../assets/cloth.svg";
+import {ReactComponent as ElectronicDevicesMarkerIcon} from "../assets/electronic_devices.svg";
+import {ReactComponent as BatteriesMarkerIcon} from "../assets/batteries.svg";
+import {ReactComponent as GlassMarkerIcon} from "../assets/glass.svg";
 
 enum CollectionCategory {
     Plastic = 'plastic',
@@ -26,17 +26,17 @@ enum CollectionCategory {
 const renderIcon = (type: CollectionCategory) => {
     switch (type.toLowerCase()) {
         case CollectionCategory.Plastic:
-            return <PlasticMarkerIcon style={{ width: '32px', height: '32px' }} />;
+            return <PlasticMarkerIcon style={{width: '32px', height: '32px'}}/>;
         case CollectionCategory.Glass:
-            return <GlassMarkerIcon style={{ width: '32px', height: '32px' }} />;
+            return <GlassMarkerIcon style={{width: '32px', height: '32px'}}/>;
         case CollectionCategory.Paper:
-            return <PaperMarkerIcon style={{ width: '32px', height: '32px' }} />;
+            return <PaperMarkerIcon style={{width: '32px', height: '32px'}}/>;
         case CollectionCategory.Cloth:
-            return <ClothMarkerIcon style={{ width: '32px', height: '32px' }} />;
+            return <ClothMarkerIcon style={{width: '32px', height: '32px'}}/>;
         case CollectionCategory.Electronic:
-            return <ElectronicDevicesMarkerIcon style={{ width: '32px', height: '32px' }} />;
+            return <ElectronicDevicesMarkerIcon style={{width: '32px', height: '32px'}}/>;
         case CollectionCategory.Battery:
-            return <BatteriesMarkerIcon style={{ width: '32px', height: '32px' }} />;
+            return <BatteriesMarkerIcon style={{width: '32px', height: '32px'}}/>;
     }
 };
 
@@ -46,6 +46,7 @@ const RecognitionBox: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false); // Состояние загрузки
     const [photo, setPhoto] = useState<string | null>(null); // Сохранённая фотография
     const [result, setResult] = useState<string | null>(null); // Результат запроса
+    const [value, setValue] = useState<string | null>(null); // Результат запроса
 
     const navigate = useNavigate();
 
@@ -80,7 +81,8 @@ const RecognitionBox: React.FC = () => {
                     console.log('response', response)
                     if (response?.data) {
                         console.log(response.data.data)
-                        setResult(response.data.data);
+                        setResult(response.data.data.category);
+                        setValue(response.data.data.value)
                     } else {
                         console.error("Error from backend: Invalid response");
                     }
@@ -92,7 +94,6 @@ const RecognitionBox: React.FC = () => {
             }
         }
     };
-
 
 
     const closeModal = () => {
@@ -209,7 +210,7 @@ const RecognitionBox: React.FC = () => {
                         }}
                         onClick={retakePhoto}
                     >
-                        <CancelIcon width="32px" height="32px" fill="white" />
+                        <CancelIcon width="32px" height="32px" fill="white"/>
                     </button>
 
                     <button
@@ -227,7 +228,7 @@ const RecognitionBox: React.FC = () => {
                         }}
                         onClick={capturePhoto}
                     >
-                        <CheckIcon width="32px" height="32px" />
+                        <CheckIcon width="32px" height="32px"/>
                     </button>
                 </div>
             )}
@@ -265,7 +266,7 @@ const RecognitionBox: React.FC = () => {
                         }}
                         onClick={closeModal}
                     >
-                        <CheckSmallIcon width="40px" height="40px" fill="black" />
+                        <CheckSmallIcon width="40px" height="40px" fill="black"/>
                     </button>
 
                     {isLoading ? (
@@ -278,7 +279,7 @@ const RecognitionBox: React.FC = () => {
                                 gap: '20px',
                             }}
                         >
-                            <RecogniteIcon width="60px" height="60px" />
+                            <RecogniteIcon width="60px" height="60px"/>
 
                             <p
                                 style={{
@@ -314,7 +315,7 @@ const RecognitionBox: React.FC = () => {
                                 gap: '10px',
                             }}
                         >
-                            <RecogniteIcon width="60px" height="60px" />
+                            <RecogniteIcon width="60px" height="60px"/>
                             <p
                                 style={{
                                     fontFamily: 'Inter, sans-serif',
@@ -368,11 +369,28 @@ const RecognitionBox: React.FC = () => {
                         </div>
 
                     )}
+                    {result && result !== 'None' && (
+                        <button
+                            style={{
+                                marginTop: '10px',
+                                padding: '10px 20px',
+                                fontFamily: 'Inter, sans-serif',
+                                fontWeight: 700,
+                                fontSize: '16px',
+                                color: 'white',
+                                backgroundColor: '#4A90E2', // Синий цвет
+                                border: 'none',
+                                borderRadius: '8px',
+                                cursor: 'pointer',
+                                textAlign: 'center',
+                            }}
+                            onClick={() => navigate(`/info/${value}`)}
+                        >
+                            Read more
+                        </button>
+                    )}
                 </div>
             )}
-
-
-
         </div>
     );
 };

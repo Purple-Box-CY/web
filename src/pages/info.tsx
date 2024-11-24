@@ -42,7 +42,7 @@ const articles = [
       "The Purple Recycling Bins in Cyprus are dedicated to the collection of textiles and clothing, providing an eco-friendly solution for disposing of unwanted garments and fabrics.",
   },
   {
-    alias: "white-box",
+    alias: "purple-box",
     img: white_electronics,
     title: "White box",
     description:
