@@ -5,9 +5,9 @@ import { ReactComponent as Avatar } from "../assets/recognite.svg";
 const ProfilePage = () => {
   return (
     <div className={"h-svh bg-white"}>
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center">
         <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
-          <div className="flex items-center justify-center">
+          <div className="flex  justify-center">
             <Avatar />
           </div>
           <div className="text-center mt-4">
