@@ -36,7 +36,7 @@ const BoxItem = () => {
         <h2 className={"text-[#222] font-bold text-[20px]"}>{box?.name}</h2>
       </header>
 
-      {process.env.REACT_APP_GOOGLE_MAP_KEY && (
+      {process.env.REACT_APP_GOOGLE_MAP_KEY && box && (
         <APIProvider
           apiKey={process.env.REACT_APP_GOOGLE_MAP_KEY}
           version={"beta"}
@@ -47,14 +47,10 @@ const BoxItem = () => {
               lat: box?.location.lat ?? 34.686488571566,
               lng: box?.location.lng ?? 33.03550530741,
             }}
-            center={{
-              lat: box?.location.lat ?? 34.686488571566,
-              lng: box?.location.lng ?? 33.03550530741,
-            }}
-            zoom={13}
-            defaultZoom={13}
+            defaultZoom={14}
             mapId={process.env.REACT_APP_GOOGLE_MAP_ID}
             disableDefaultUI
+            disableDoubleClickZoom
           >
             {box && (
               <CustomMarker

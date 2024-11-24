@@ -1,5 +1,6 @@
 import Menu from "../components/menu/menu";
 import React from "react";
+import { ReactComponent as Avatar } from "../assets/recognite.svg";
 
 const ProfilePage = () => {
   return (
@@ -7,11 +8,7 @@ const ProfilePage = () => {
       <div className="flex items-center justify-center min-h-screen">
         <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
           <div className="flex items-center justify-center">
-            <img
-              src="https://via.placeholder.com/80"
-              alt="User Avatar"
-              className="w-20 h-20 rounded-full border-4"
-            />
+            <Avatar />
           </div>
           <div className="text-center mt-4">
             <h2 className="text-xl font-semibold text-gray-800">Jane Doe</h2>
