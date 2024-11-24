@@ -28,18 +28,18 @@ export const ClusteredMarkers = ({ mapItems }: ClusteredMarkersProps) => {
   // create the markerClusterer once the map is available and update it when
   // the markers are changed
   const map = useMap();
-  const clusterer = useMemo(() => {
-    if (!map) return null;
-
-    return new MarkerClusterer({ map });
-  }, [map]);
-
-  useEffect(() => {
-    if (!clusterer) return;
-
-    clusterer.clearMarkers();
-    clusterer.addMarkers(Object.values(markers));
-  }, [clusterer, markers]);
+  // const clusterer = useMemo(() => {
+  //   if (!map) return null;
+  //
+  //   return new MarkerClusterer({ map });
+  // }, [map]);
+  //
+  // useEffect(() => {
+  //   if (!clusterer) return;
+  //
+  //   clusterer.clearMarkers();
+  //   clusterer.addMarkers(Object.values(markers));
+  // }, [clusterer, markers]);
 
   // this callback will effectively get passsed as ref to the markers to keep
   // tracks of markers currently on the map

@@ -1,12 +1,23 @@
 import Menu from "../components/menu/menu";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ReactComponent as BackIcon } from "../assets/back_icon.svg";
+import { service } from "../api/services";
+import { IArticle, IBox } from "../interfaces";
 
 const BoxItem = () => {
-  const params = useParams();
+  const { id } = useParams();
+
   const navigate = useNavigate();
 
+  const [box, setBox] = useState<IBox | null>();
+
+  useEffect(() => {
+    id &&
+      service.getArticleItem(id).then((res) => {
+        setBox(res.data);
+      });
+  }, [id]);
   return (
     <div className={"h-svh bg-white"}>
       <div className={"h-svh bg-white relative"}>
