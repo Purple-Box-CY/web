@@ -113,6 +113,7 @@ const MapComponent = (props: MapProps) => {
         setSelectValue("");
         setDescription("");
         setAddButtonVisible(false);
+        setCustomMarkers([]);
         setShowNotification(true);
         setTimeout(() => setShowNotification(false), 6000);
       })
@@ -418,13 +419,13 @@ const MapComponent = (props: MapProps) => {
               alignItems: "center",
               justifyContent: "space-between",
               borderRadius: "12px",
-              textAlign: "center",
+              textAlign: "left",
             }}
 
 
         >
           <span style={{ marginRight: "16px", fontSize: "20px" }}>✅</span>
-          <span style={{ flex: 1, textAlign: "center" }}>
+          <span style={{ flex: 1, textAlign: "left" }}>
             Thank you! The box will appear on the map after moderation. It
             usually takes a few days.
           </span>
