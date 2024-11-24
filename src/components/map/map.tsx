@@ -115,7 +115,7 @@ const MapComponent = (props: MapProps) => {
         setAddButtonVisible(false);
         setCustomMarkers([]);
         setShowNotification(true);
-        setTimeout(() => setShowNotification(false), 6000);
+        setTimeout(() => setShowNotification(false), 10000);
       })
       .catch((error: any) => {
         console.error("Error adding marker: ", error);
@@ -421,28 +421,12 @@ const MapComponent = (props: MapProps) => {
               borderRadius: "12px",
               textAlign: "left",
             }}
-
-
         >
           <span style={{ marginRight: "16px", fontSize: "20px" }}>✅</span>
           <span style={{ flex: 1, textAlign: "left" }}>
             Thank you! The box will appear on the map after moderation. It
             usually takes a few days.
           </span>
-          <button
-            onClick={() => setShowNotification(false)}
-            style={{
-              background: "transparent",
-              border: "none",
-              color: "white",
-              cursor: "pointer",
-              fontSize: "16px",
-              marginLeft: "16px",
-              padding: "8px",
-            }}
-          >
-            ✕
-          </button>
         </div>
       )}
     </div>
