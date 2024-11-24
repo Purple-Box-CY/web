@@ -83,7 +83,6 @@ const RecognitionBox: React.FC = () => {
           const response = await camera.getRecognitionItem(imageSrc, "box");
           console.log("response", response);
           if (response?.data) {
-            console.log(response.data.data);
             setResult(response.data.data.category);
             setValue(response.data.data.value);
           } else {

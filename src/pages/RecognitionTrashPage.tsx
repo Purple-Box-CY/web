@@ -81,9 +81,8 @@ const RecognitionTrash: React.FC = () => {
           formData.append("image", imageSrc);
 
           const response = await camera.getRecognitionItem(imageSrc, "trash");
-          console.log("response", response);
+
           if (response?.data) {
-            console.log(response.data.data);
             setResult(response.data.data.category);
             setValue(response.data.data.value);
           } else {
