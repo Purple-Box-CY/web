@@ -62,9 +62,6 @@ const MapComponent = (props: MapProps) => {
       });
   }, [category]);
 
-  const handleMapClick = (e: any) => {
-    // Получение широты и долготы из события
-  };
 
   const defaultCenter = prevCenter
     ? prevCenter
@@ -102,8 +99,10 @@ const MapComponent = (props: MapProps) => {
                 zoom.detail.zoom && setPrevZoom(zoom.detail.zoom);
                 zoom.detail.center && setPrevCenter(zoom.detail.center);
               }}
-              onClick={handleMapClick}
-              defaultZoom={prevZoom ?? 13}
+              onClick={ev => {
+                  console.log("latitide = ", ev);
+                  console.log("longitude = ", ev);
+              }}              defaultZoom={prevZoom ?? 13}
               mapId={process.env.REACT_APP_GOOGLE_MAP_ID}
               disableDefaultUI
             >
