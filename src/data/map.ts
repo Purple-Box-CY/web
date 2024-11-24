@@ -3,9 +3,9 @@ export enum CollectionCategory {
   Glass = "Glass",
   Plastic = "Plastic",
   Cloth = "Cloth",
-  Electronic = "Electronic devices",
-  Battery = "Batteries",
-  GreenPoint = "Green Point",
+  Electronic = "Electronic",
+  Battery = "Battery",
+  GreenPoint = "GreenPoint",
   Multibox = "Multibox",
 }
 
