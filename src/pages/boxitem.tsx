@@ -43,10 +43,15 @@ const BoxItem = () => {
         >
           <Map
             className={"h-[300px]"}
+            defaultCenter={{
+              lat: box?.location.lat ?? 34.686488571566,
+              lng: box?.location.lng ?? 33.03550530741,
+            }}
             center={{
               lat: box?.location.lat ?? 34.686488571566,
               lng: box?.location.lng ?? 33.03550530741,
             }}
+            zoom={13}
             defaultZoom={13}
             mapId={process.env.REACT_APP_GOOGLE_MAP_ID}
             disableDefaultUI
