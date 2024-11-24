@@ -71,6 +71,10 @@ const MapComponent = (props: MapProps) => {
               lat: userLocation?.latitude ?? DEFAULT_LAT,
               lng: userLocation?.longitude ?? DEFAULT_LNG,
             }}
+            onClick={ev => {
+              console.log("latitide = ", ev);
+              console.log("longitude = ", ev);
+            }}
             defaultZoom={13}
             mapId={process.env.REACT_APP_GOOGLE_MAP_ID}
             disableDefaultUI

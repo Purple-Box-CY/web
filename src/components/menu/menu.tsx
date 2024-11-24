@@ -102,12 +102,12 @@ const Menu = (props: MenuProps) => {
       </div>
       {isModalOpen && (
           <div
-              className="fixed bottom-0 left-0 right-0 bg-transparent z-50 flex items-end"
+              className="fixed inset-0 bg-transparent z-50 flex justify-center items-center sm:items-end"
               onClick={toggleModal}
           >
             <div
-                className="bg-white rounded-t-[32px] p-6 max-h-[80%] w-full text-center relative transform transition-transform duration-300 translate-y-0"
-                onClick={(e) => e.stopPropagation()} // Остановка всплытия, чтобы клик внутри модалки не закрывал ее
+                className="bg-white rounded-[32px] p-6 max-h-[80%] w-full max-w-[500px] text-center relative sm:w-[90%] sm:rounded-t-[32px]"
+                onClick={(e) => e.stopPropagation()} // Остановка всплытия
             >
               <button
                   onClick={toggleModal}
@@ -118,7 +118,7 @@ const Menu = (props: MenuProps) => {
 
               <div className="flex justify-center mb-4 mt-3">
                 <div className="rounded-full flex items-center justify-center">
-                  <RecogniteIcon width="60px" height="60px"/>
+                  <RecogniteIcon width="60px" height="60px" />
                 </div>
               </div>
               <div className="mb-7">
@@ -136,10 +136,10 @@ const Menu = (props: MenuProps) => {
               >
                 WHERE SHOULD I THROW THIS AWAY?
               </button>
-
             </div>
           </div>
       )}
+
 
     </div>
   );
