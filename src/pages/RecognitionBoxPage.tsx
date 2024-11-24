@@ -68,6 +68,7 @@ const RecognitionBox: React.FC = () => {
     };
   }, []);
 
+
   const capturePhoto = async () => {
     if (webcamRef.current) {
       const imageSrc = webcamRef.current.getScreenshot();
