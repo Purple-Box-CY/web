@@ -16,6 +16,7 @@ import { ReactComponent as BatteriesMarkerIcon } from "../../assets/batteries.sv
 import { ReactComponent as GlassMarkerIcon } from "../../assets/glass.svg";
 import { ReactComponent as GreenPointsMarkerIcon } from "../../assets/green_points.svg";
 import { ReactComponent as MultiboxMarkerIcon } from "../../assets/multibox.svg";
+import { ReactComponent as Close } from "../../assets/close-dark.svg";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -28,15 +29,15 @@ const MenuProps = {
   },
 };
 
-const names: string[] = [
-  "Paper",
-  "Glass",
-  "Plastic",
-  "Cloth",
-  "Electronic",
-  "Battery",
-  "GreenPoint",
-  "Multibox",
+const names: CollectionCategory[] = [
+  CollectionCategory.GreenPoint,
+  CollectionCategory.Multibox,
+  CollectionCategory.Plastic,
+  CollectionCategory.Cloth,
+  CollectionCategory.Paper,
+  CollectionCategory.Glass,
+  CollectionCategory.Electronic,
+  CollectionCategory.Battery,
 ];
 
 export default function MultipleSelectChip() {
@@ -53,7 +54,7 @@ export default function MultipleSelectChip() {
     );
   };
 
-  const renderMarker = (type: string) => {
+  const renderMarker = (type: CollectionCategory) => {
     switch (type) {
       case CollectionCategory.Paper:
         return <PaperMarkerIcon />;
@@ -76,7 +77,19 @@ export default function MultipleSelectChip() {
 
   return (
     <div className={""}>
-      <FormControl className={"w-full"}>
+      <FormControl className={"w-full "}>
+        <div
+          className={
+            "absolute right-[24px] z-10 top-1/2 -translate-y-1/2 w-[32px] h-[32px] flex justify-center items-center"
+          }
+        >
+          <Close
+            onClick={() => {
+              setCategories([]);
+            }}
+          />
+        </div>
+
         <InputLabel id="demo-multiple-chip-label">Select your box</InputLabel>
         <Select
           className={"bg-white w-full"}
@@ -90,9 +103,14 @@ export default function MultipleSelectChip() {
           }
           renderValue={(selected) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} />
-              ))}
+              {selected.map((value) => {
+                return (
+                  <div key={value} className={"flex"}>
+                    {renderMarker(value as CollectionCategory)}
+                    <Chip key={value} label={value} />
+                  </div>
+                );
+              })}
             </Box>
           )}
           MenuProps={MenuProps}
