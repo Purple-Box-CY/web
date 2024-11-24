@@ -3,11 +3,19 @@ import { ReactComponent as InfoItem } from "../../assets/info_off.svg";
 import { ReactComponent as CameraItem } from "../../assets/camera_off.svg";
 import { ReactComponent as CameraItemOn } from "../../assets/camera_on.svg";
 import { ReactComponent as ProfileItem } from "../../assets/profile_off.svg";
+import {ReactComponent as RecogniteIcon} from '../../assets/recognite.svg';
+import {ReactComponent as CheckSmallIcon} from '../../assets/close_small.svg';
+
 import { NavLink, useMatch } from "react-router";
+import React, { useState } from "react";
+import {useNavigate} from "react-router-dom";
 
 interface MenuProps {}
 
 const Menu = (props: MenuProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate()
+
   const isProfileItemActive = useMatch({
     path: `/profile/*`,
     caseSensitive: false,
@@ -27,6 +35,20 @@ const Menu = (props: MenuProps) => {
     path: `/`,
     caseSensitive: false,
   });
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  const handleNavigateToBoxInfo = () => {
+    setIsModalOpen(false);
+    navigate("/camera");
+  };
+
+  const handleNavigateToWasteGuide = () => {
+    setIsModalOpen(false);
+    navigate("/trash");
+  };
 
   return (
     <div
@@ -67,8 +89,8 @@ const Menu = (props: MenuProps) => {
           PROFILE
         </h3>
       </NavLink>
-      <NavLink
-        to={"/camera"}
+      <div
+        onClick={toggleModal}
         className={` flex flex-col justify-center items-center rounded-[12px] w-[50px] h-[50px] ${isScanItemActive && "bg-[#A531B5]"}`}
       >
         {isScanItemActive ? <CameraItemOn /> : <CameraItem />}
@@ -77,7 +99,48 @@ const Menu = (props: MenuProps) => {
         >
           SCAN
         </h3>
-      </NavLink>
+      </div>
+      {isModalOpen && (
+          <div
+              className="fixed bottom-0 left-0 right-0 bg-transparent z-50 flex items-end"
+              onClick={toggleModal}
+          >
+            <div
+                className="bg-white rounded-t-[32px] p-6 max-h-[80%] w-full text-center relative transform transition-transform duration-300 translate-y-0"
+                onClick={(e) => e.stopPropagation()} // Остановка всплытия, чтобы клик внутри модалки не закрывал ее
+            >
+              <button
+                  onClick={toggleModal}
+                  className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              >
+                <CheckSmallIcon width="24px" height="24px" />
+              </button>
+
+              <div className="flex justify-center mb-4 mt-3">
+                <div className="rounded-full flex items-center justify-center">
+                  <RecogniteIcon width="60px" height="60px"/>
+                </div>
+              </div>
+              <div className="mb-7">
+                <div className="text-2xl font-bold mb-2">How can I help you?</div>
+              </div>
+              <button
+                  className="bg-[#A531B5] text-white font-bold py-5 px-6 rounded-[64px] mb-3 w-full text-[14px]"
+                  onClick={handleNavigateToBoxInfo}
+              >
+                WHAT IS THIS BOX FOR?
+              </button>
+              <button
+                  className="bg-[#222] text-white font-bold py-5 px-6 rounded-[64px] w-full text-[14px]"
+                  onClick={handleNavigateToWasteGuide}
+              >
+                WHERE SHOULD I THROW THIS AWAY?
+              </button>
+
+            </div>
+          </div>
+      )}
+
     </div>
   );
 };
