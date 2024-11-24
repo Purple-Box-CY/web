@@ -1,12 +1,12 @@
-import {publicApi, publicApi2} from "./api";
+import { publicApi, publicApi2 } from "./api";
 
 export const service = {
   getArticleItem: async (alias: string) => {
     return await publicApi.get(`/articles/${alias}`);
   },
 
-  getBoxItem: async (alias: string) => {
-    return await publicApi.get(`/articles/${alias}`);
+  getMarkers: async () => {
+    return await publicApi.get(`/markers`);
   },
 };
 

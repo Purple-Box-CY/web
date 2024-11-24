@@ -1,9 +1,10 @@
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
-import React, { useState } from "react";
-import { IMapItem, mapItems } from "../../data/map";
+import React, { useEffect, useState } from "react";
 import CurrentLocationMarker from "./markers/currentLocationMarker";
 import Filter from "./filter";
 import { ClusteredMarkers } from "./clusteredMarkers";
+import { service } from "../../api/services";
+import { IMapItem } from "../../data/map";
 
 interface MapProps {}
 
@@ -16,37 +17,35 @@ const MapComponent = (props: MapProps) => {
     longitude: number;
   } | null>(null);
 
-  const [selectedMarker, setSelectedMarker] = useState<IMapItem | null>(null);
+  const [mapItems, setMapItems] = useState<IMapItem[]>([]);
 
-  const onMarkerClick = (marker: IMapItem) => {
-    setSelectedMarker(marker);
+  const getUserLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+
+          setUserLocation({ latitude, longitude });
+        },
+
+        (error) => {
+          console.error("Error get user location: ", error);
+        },
+      );
+    } else {
+      console.log("Geolocation is not supported by this browser");
+    }
   };
-  // TODO detect current user position
-  // const getUserLocation = () => {
-  //   if (navigator.geolocation) {
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         const { latitude, longitude } = position.coords;
-  //
-  //         setUserLocation({ latitude, longitude });
-  //       },
-  //
-  //       (error) => {
-  //         console.error("Error get user location: ", error);
-  //       },
-  //     );
-  //   } else {
-  //     console.log("Geolocation is not supported by this browser");
-  //   }
-  // };
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     getUserLocation();
-  //   }, 1000);
-  // }, []);
+  useEffect(() => {
+    getUserLocation();
+  }, []);
 
-  const [openedInfoId, setOpenedInfoId] = useState<string | null>(null);
+  useEffect(() => {
+    service.getMarkers().then((res) => {
+      setMapItems(res.data.items);
+    });
+  }, []);
 
   return (
     <div className={"h-svh relative"}>
@@ -71,28 +70,8 @@ const MapComponent = (props: MapProps) => {
           >
             {mapItems.map((item, index) => {
               return (
-                <div
-                  key={item.id}
-                  onClick={() => {
-                    onMarkerClick(item);
-                  }}
-                >
-                  {/*<CustomAdvancedMarker*/}
-                  {/*  key={index}*/}
-                  {/*  id={item.id}*/}
-                  {/*  latitude={item.location?.lat ?? DEFAULT_LAT}*/}
-                  {/*  longitude={item.location?.lng ?? DEFAULT_LNG}*/}
-                  {/*  type={item.type}*/}
-                  {/*  description={item.description}*/}
-                  {/*  openedInfoId={openedInfoId}*/}
-                  {/*  setOpenedInfoId={setOpenedInfoId}*/}
-                  {/*/>*/}
-                  <ClusteredMarkers
-                    // trees={trees}
-                    mapItems={mapItems}
-                    // openedInfoId={openedInfoId}
-                    // setOpenedInfoId={setOpenedInfoId}
-                  />
+                <div key={item.uid}>
+                  <ClusteredMarkers mapItems={mapItems} />
                 </div>
               );
             })}
