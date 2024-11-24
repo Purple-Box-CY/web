@@ -4,7 +4,7 @@ import CurrentLocationMarker from "./markers/currentLocationMarker";
 import Filter from "./filter";
 import { ClusteredMarkers } from "./clusteredMarkers";
 import { service } from "../../api/services";
-import { IMapItem } from "../../data/map";
+import { CollectionCategory, IMapItem } from "../../data/map";
 
 interface MapProps {}
 
@@ -18,6 +18,10 @@ const MapComponent = (props: MapProps) => {
   } | null>(null);
 
   const [mapItems, setMapItems] = useState<IMapItem[]>([]);
+
+  const [category, setCategory] = React.useState<CollectionCategory | null>(
+    null,
+  );
 
   const getUserLocation = () => {
     if (navigator.geolocation) {
@@ -45,12 +49,12 @@ const MapComponent = (props: MapProps) => {
     service.getMarkers().then((res) => {
       setMapItems(res.data.items);
     });
-  }, []);
+  }, [category]);
 
   return (
     <div className={"h-svh relative"}>
       <div className={"absolute z-10 top-4 left-2 right-2"}>
-        <Filter />
+        <Filter category={category} setCategory={setCategory} />
       </div>
 
       {process.env.REACT_APP_GOOGLE_MAP_KEY && (
