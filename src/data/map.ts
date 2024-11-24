@@ -1,10 +1,10 @@
 export enum CollectionCategory {
-  Paper = "Paper (brown)",
-  Glass = "Glass (blue)",
-  Plastic = "Plastic (green)",
-  Cloth = "Cloth (purple)",
-  Electronic = "Electronic devices (white)",
-  Battery = "Batteries (white)",
+  Paper = "Paper",
+  Glass = "Glass",
+  Plastic = "Plastic",
+  Cloth = "Cloth",
+  Electronic = "Electronic devices",
+  Battery = "Batteries",
   GreenPoint = "Green Point",
   Multibox = "Multibox",
 }
