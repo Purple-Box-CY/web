@@ -41,7 +41,6 @@ const names: CollectionCategory[] = [
 ];
 
 export default function MultipleSelectChip() {
-  const theme = useTheme();
   const [categories, setCategories] = React.useState<string[]>([]);
 
   const handleChange = (event: SelectChangeEvent<typeof categories>) => {
@@ -78,17 +77,19 @@ export default function MultipleSelectChip() {
   return (
     <div className={""}>
       <FormControl className={"w-full "}>
-        <div
-          className={
-            "absolute right-[24px] z-10 top-1/2 -translate-y-1/2 w-[32px] h-[32px] flex justify-center items-center"
-          }
-        >
-          <Close
-            onClick={() => {
-              setCategories([]);
-            }}
-          />
-        </div>
+        {categories.length > 0 && (
+          <div
+            className={
+              "absolute right-[24px] z-10 top-1/2 -translate-y-1/2 w-[32px] h-[32px] flex justify-center items-center"
+            }
+          >
+            <Close
+              onClick={() => {
+                setCategories([]);
+              }}
+            />
+          </div>
+        )}
 
         <InputLabel id="demo-multiple-chip-label">Select your box</InputLabel>
         <Select
