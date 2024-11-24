@@ -102,11 +102,11 @@ const Menu = (props: MenuProps) => {
       </div>
       {isModalOpen && (
           <div
-              className="fixed inset-0 bg-transparent z-50 flex justify-center items-center sm:items-end"
+              className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-end" // Центровка по горизонтали и прижатие к низу
               onClick={toggleModal}
           >
             <div
-                className="bg-white rounded-[32px] p-6 max-h-[80%] w-full max-w-[500px] text-center relative sm:w-[90%] sm:rounded-t-[32px]"
+                className="bg-white rounded-t-[32px] p-6 w-full max-w-[500px] text-center relative sm:w-[90%]" // Ширина 500px на ПК, 90% на мобильных
                 onClick={(e) => e.stopPropagation()} // Остановка всплытия
             >
               <button
@@ -139,6 +139,8 @@ const Menu = (props: MenuProps) => {
             </div>
           </div>
       )}
+
+
 
 
     </div>
