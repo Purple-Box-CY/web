@@ -1,9 +1,9 @@
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
 import React, { useState } from "react";
 import { IMapItem, mapItems } from "../../data/map";
-import { CustomAdvancedMarker } from "./marker";
 import CurrentLocationMarker from "./markers/currentLocationMarker";
 import Filter from "./filter";
+import { ClusteredMarkers } from "./clusteredMarkers";
 
 interface MapProps {}
 
@@ -77,15 +77,21 @@ const MapComponent = (props: MapProps) => {
                     onMarkerClick(item);
                   }}
                 >
-                  <CustomAdvancedMarker
-                    key={index}
-                    id={item.id}
-                    latitude={item.location?.lat ?? DEFAULT_LAT}
-                    longitude={item.location?.lng ?? DEFAULT_LNG}
-                    type={item.type}
-                    description={item.description}
-                    openedInfoId={openedInfoId}
-                    setOpenedInfoId={setOpenedInfoId}
+                  {/*<CustomAdvancedMarker*/}
+                  {/*  key={index}*/}
+                  {/*  id={item.id}*/}
+                  {/*  latitude={item.location?.lat ?? DEFAULT_LAT}*/}
+                  {/*  longitude={item.location?.lng ?? DEFAULT_LNG}*/}
+                  {/*  type={item.type}*/}
+                  {/*  description={item.description}*/}
+                  {/*  openedInfoId={openedInfoId}*/}
+                  {/*  setOpenedInfoId={setOpenedInfoId}*/}
+                  {/*/>*/}
+                  <ClusteredMarkers
+                    // trees={trees}
+                    mapItems={mapItems}
+                    // openedInfoId={openedInfoId}
+                    // setOpenedInfoId={setOpenedInfoId}
                   />
                 </div>
               );

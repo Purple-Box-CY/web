@@ -1,6 +1,7 @@
-import React, { FunctionComponent } from "react";
-import { AdvancedMarker, InfoWindow } from "@vis.gl/react-google-maps";
-import { CollectionCategory } from "../../data/map";
+import type { Marker } from "@googlemaps/markerclusterer";
+import React, { useCallback } from "react";
+import { AdvancedMarker } from "@vis.gl/react-google-maps";
+import { CollectionCategory, IMapItem } from "../../data/map";
 import { ReactComponent as PaperMarkerIcon } from "../../assets/paper.svg";
 import { ReactComponent as PlasticMarkerIcon } from "../../assets/plastic.svg";
 import { ReactComponent as ClothMarkerIcon } from "../../assets/cloth.svg";
@@ -9,34 +10,28 @@ import { ReactComponent as BatteriesMarkerIcon } from "../../assets/batteries.sv
 import { ReactComponent as GlassMarkerIcon } from "../../assets/glass.svg";
 import { ReactComponent as GreenPointsMarkerIcon } from "../../assets/green_points.svg";
 import { ReactComponent as MultiboxMarkerIcon } from "../../assets/multibox.svg";
-import {NavLink} from "react-router";
 
-interface Props {
-  latitude: number;
-  longitude: number;
-  type: CollectionCategory;
-  description: string;
-  id: string;
-  openedInfoId: string | null;
-  setOpenedInfoId: React.Dispatch<React.SetStateAction<string | null>>;
-}
+export type CustomMarkerProps = {
+  mapItem: IMapItem;
+  onClick: (mapItem: IMapItem) => void;
+  setMarkerRef: (marker: Marker | null, key: string) => void;
+};
 
-export const CustomAdvancedMarker: FunctionComponent<Props> = ({
-  latitude,
-  longitude,
-  type,
-  description,
-  id,
-  setOpenedInfoId,
-  openedInfoId,
-}) => {
-  const position = {
-    lat: latitude,
-    lng: longitude,
-  };
+/**
+ * Wrapper Component for an AdvancedMarker for a single mapItem.
+ */
+export const CustomMarker = (props: CustomMarkerProps) => {
+  const { mapItem, onClick, setMarkerRef } = props;
+
+  const handleClick = useCallback(() => onClick(mapItem), [onClick, mapItem]);
+  const ref = useCallback(
+    (marker: google.maps.marker.AdvancedMarkerElement) =>
+      setMarkerRef(marker, mapItem.id),
+    [setMarkerRef, mapItem.id],
+  );
 
   const renderMarker = () => {
-    switch (type) {
+    switch (mapItem.type) {
       case CollectionCategory.Paper:
         return <PaperMarkerIcon />;
       case CollectionCategory.Plastic:
@@ -57,31 +52,8 @@ export const CustomAdvancedMarker: FunctionComponent<Props> = ({
   };
 
   return (
-    <>
-      <AdvancedMarker
-        onClick={() => {
-          setOpenedInfoId(id);
-        }}
-        position={position}
-        title={"current location"}
-      >
-        {renderMarker()}
-
-        {openedInfoId === id && (
-          <InfoWindow
-            onClose={() => {
-              setOpenedInfoId(null);
-            }}
-            position={position}
-            maxWidth={200}
-          >
-            <NavLink to={'/box-item'}>
-              <p className={"mt-4"}>{description}</p>
-              <p className={"font-bold"}>{type}</p>
-            </NavLink>
-          </InfoWindow>
-        )}
-      </AdvancedMarker>
-    </>
+    <AdvancedMarker position={mapItem.location} ref={ref} onClick={handleClick}>
+      {renderMarker()}
+    </AdvancedMarker>
   );
 };
