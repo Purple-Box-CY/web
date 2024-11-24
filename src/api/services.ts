@@ -16,7 +16,7 @@ export const service = {
 };
 
 export const camera = {
-  getRecognitionItem: async (imageBase64: string) => {
+  getRecognitionItem: async (imageBase64: string, type: string) => {
     const base64ToBlob = (base64: string) => {
       const byteString = atob(base64.split(",")[1]);
       const mimeString = base64.split(",")[0].split(":")[1].split(";")[0]; // Определяем MIME тип
@@ -35,7 +35,7 @@ export const camera = {
     const formData = new FormData();
     formData.append("file", imageBlob, "image.jpg");
 
-    return await publicApi2.post("/camera/box", formData, {
+    return await publicApi2.post(`/camera/${type}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

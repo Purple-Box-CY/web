@@ -5,6 +5,7 @@ import Filter from "./filter";
 import { ClusteredMarkers } from "./clusteredMarkers";
 import { service } from "../../api/services";
 import { CollectionCategory, IMapItem } from "../../data/map";
+import { useLocation } from "react-router";
 
 interface MapProps {}
 
@@ -18,10 +19,11 @@ const MapComponent = (props: MapProps) => {
   } | null>(null);
 
   const [mapItems, setMapItems] = useState<IMapItem[]>([]);
-
+  const location = useLocation(); // Получаем переданное состояние
   const [category, setCategory] = React.useState<CollectionCategory | null>(
-    null,
+    location.state?.filterCategory || null, // Устанавливаем начальное значение категории
   );
+  console.log('category', category)
 
   const getUserLocation = () => {
     if (navigator.geolocation) {
@@ -46,6 +48,7 @@ const MapComponent = (props: MapProps) => {
   }, []);
 
   useEffect(() => {
+    console.log(category)
     service.getMarkers(category).then((res) => {
       setMapItems(res.data.items);
     });
