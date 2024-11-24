@@ -105,7 +105,10 @@ export default function Filter(props: FilterProps) {
           renderValue={(selected) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
               <div key={category} className={"flex"}>
-                {renderMarker(category as CollectionCategory)}
+                <div className={"mr-1"}>
+                  {renderMarker(category as CollectionCategory)}
+                </div>
+
                 <Chip key={category} label={category} />
               </div>
             </Box>
@@ -114,7 +117,7 @@ export default function Filter(props: FilterProps) {
         >
           {names.map((name) => (
             <MenuItem key={name} value={name}>
-              {renderMarker(name)}
+              <div className={"mr-1"}>{renderMarker(name)}</div>
               {name}
             </MenuItem>
           ))}
