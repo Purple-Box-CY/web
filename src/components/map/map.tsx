@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { IMapItem, mapItems } from "../../data/map";
 import { CustomAdvancedMarker } from "./marker";
 import CurrentLocationMarker from "./markers/currentLocationMarker";
+import Filter from "./filter";
 
 interface MapProps {}
 
@@ -48,7 +49,11 @@ const MapComponent = (props: MapProps) => {
   const [openedInfoId, setOpenedInfoId] = useState<string | null>(null);
 
   return (
-    <div className={"h-svh"}>
+    <div className={"h-svh relative"}>
+      <div className={"absolute z-10 top-4 left-2 right-2"}>
+        <Filter />
+      </div>
+
       {process.env.REACT_APP_GOOGLE_MAP_KEY && (
         <APIProvider
           apiKey={process.env.REACT_APP_GOOGLE_MAP_KEY}

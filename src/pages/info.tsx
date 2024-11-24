@@ -80,13 +80,14 @@ const InfoPage = () => {
             to={`/info/${articleItem.alias}`}
             className="p-4 rounded overflow-hidden shadow-lg cursor-pointer hover:opacity-[0.9]"
           >
-            <img className="w-full" src={articleItem.img} alt="box image" />
-            <div className="px-6 py-4">
+            <div className="py-4">
               <div className="font-bold text-xl mb-2"> {articleItem.title}</div>
               <p className="text-gray-700 text-base">
                 {articleItem.description}
               </p>
             </div>
+
+            <img className="w-full" src={articleItem.img} alt="box image" />
           </NavLink>
         );
       })}
