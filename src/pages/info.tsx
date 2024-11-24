@@ -9,9 +9,19 @@ import white_electronics from "../assets/08_white.png";
 import white_bataries from "../assets/07_white.png";
 import green_point from "../assets/09_green.png";
 import red from "../assets/06_red.png";
+import { CollectionCategory } from "../data/map";
 
-const articles = [
+export interface IArticle {
+  type: CollectionCategory;
+  alias: string;
+  img: string;
+  title: string;
+  description: string;
+}
+
+export const articles = [
   {
+    type: CollectionCategory.Paper,
     alias: "paper-box",
     img: brown,
     title: "This category can be identified by its BROWN Bins",
@@ -20,6 +30,7 @@ const articles = [
       "If your area is part of the recycling program and recycling material is picked up every week, then please dispose the Paper material into brown garbage bags.",
   },
   {
+    type: CollectionCategory.Plastic,
     alias: "blue-box",
     img: blue,
     title: "This category can be identified by its BLUE Bins",
@@ -28,6 +39,7 @@ const articles = [
       "If your area is part of the recycling program and recycling material is picked up every week, then please dispose the PMD material into transparent garbage bags.",
   },
   {
+    type: CollectionCategory.Glass,
     alias: "green-box",
     img: green,
     title: "Green Box",
@@ -35,6 +47,7 @@ const articles = [
       "The Green Recycling Bin in Cyprus is part of the city’s initiative to promote sustainable waste management by encouraging the proper disposal of glass materials.",
   },
   {
+    type: CollectionCategory.Cloth,
     alias: "purple-box",
     img: purple,
     title: "Purple box",
@@ -42,13 +55,15 @@ const articles = [
       "The Purple Recycling Bins in Cyprus are dedicated to the collection of textiles and clothing, providing an eco-friendly solution for disposing of unwanted garments and fabrics.",
   },
   {
-    alias: "purple-box",
+    type: CollectionCategory.Electronic,
+    alias: "white-box",
     img: white_electronics,
     title: "White box",
     description:
       "The Recycling Bins for Electrical and Electronic Equipment (EEE) in Cyprus are designated for the proper disposal of unwanted or non-functional electronic devices and appliances.",
   },
   {
+    type: CollectionCategory.Battery,
     alias: "batteries-box",
     img: white_bataries,
     title: "Batteries box",
@@ -56,6 +71,7 @@ const articles = [
       "The Battery Recycling Bins in Cyprus are designed for the safe collection and disposal of used batteries.",
   },
   {
+    type: CollectionCategory.GreenPoint,
     alias: "green-points",
     img: green_point,
     title: "Green Points",
@@ -63,6 +79,7 @@ const articles = [
       "Green Points in Cyprus are specialized waste collection facilities designed to handle materials that are not suitable for regular waste bins or traditional recycling programs.",
   },
   {
+    type: CollectionCategory.Multibox,
     alias: "multi-boxes",
     img: red,
     title: "Multiboxes",
