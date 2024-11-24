@@ -134,7 +134,7 @@ const Menu = (props: MenuProps) => {
                   className="bg-[#222] text-white font-bold py-5 px-6 rounded-[64px] w-full text-[14px]"
                   onClick={handleNavigateToWasteGuide}
               >
-                WHERE SHOULD I THROW THIS AWAY?
+                HOW DO I RECYCLE OR DISPOSE OF THIS
               </button>
             </div>
           </div>

@@ -181,7 +181,7 @@ const RecognitionTrash: React.FC = () => {
           zIndex: 3,
         }}
       >
-        {photo ? "REVIEW YOUR PHOTO" : "TAKE A PHOTO OF THE TRASH"}
+        {photo ? "REVIEW YOUR PHOTO" : "TAKE A PHOTO OF YOUR ITEM"}
       </div>
 
       {!isModalOpen && (
@@ -332,7 +332,7 @@ const RecognitionTrash: React.FC = () => {
                 My answer is
               </p>
 
-              {result?.toLowerCase() === CollectionCategory.None || !result ? (
+              {result?.toLowerCase() === CollectionCategory.None.toLowerCase() || !result ? (
                 <p
                   style={{
                     fontFamily: "Inter, sans-serif",
@@ -343,7 +343,7 @@ const RecognitionTrash: React.FC = () => {
                     textAlign: "center",
                   }}
                 >
-                  I don't recognize the box in the photo
+                    I didn't find any items in this photo
                 </p>
               ) : (
                 <div
@@ -352,6 +352,7 @@ const RecognitionTrash: React.FC = () => {
                     alignItems: "center",
                     justifyContent: "center",
                     gap: "10px",
+                    marginBottom: 10,
                   }}
                 >
                   {renderIcon(result as CollectionCategory)}
@@ -374,39 +375,13 @@ const RecognitionTrash: React.FC = () => {
           {result && result.toLowerCase() !== "none" && (
             <>
               <button
-                style={{
-                  marginTop: "10px",
-                  padding: "10px 20px",
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: 700,
-                  fontSize: "16px",
-                  color: "white",
-                  backgroundColor: "#4A90E2",
-                  border: "none",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  textAlign: "center",
-                }}
+                className="bg-[#A531B5] text-white font-bold py-5 px-6 rounded-[64px] mb-3 w-full text-[18px]"
                 onClick={() => navigate(`/info/${value}`)}
               >
                 Read more
               </button>
               <button
-                style={{
-                  marginTop: "10px",
-                  padding: "10px 20px",
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: 700,
-                  fontSize: "16px",
-                  color: "white",
-                  backgroundColor: "#2ECC71",
-                  border: "none",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  textAlign: "center",
-                  width: "calc(100% - 40px)", // Отступы по бокам
-                  maxWidth: "400px", // Ограничение ширины кнопки
-                }}
+                className="bg-[#222] text-white font-bold py-5 px-6 rounded-[64px] w-full text-[18px]"
                 onClick={() =>
                   navigate("/", {
                     state: { filterCategory: result.toLowerCase() },
