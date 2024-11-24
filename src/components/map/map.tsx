@@ -25,9 +25,7 @@ const MapComponent = (props: MapProps) => {
     location.state?.filterCategory || null, // Устанавливаем начальное значение категории
   );
   const [loading, setLoading] = useState<boolean>(false);
-  const [prevZoom, setPrevZoom] = useState<number>();
-  const [prevCenter, setPrevCenter] = useState<any>();
-  // console.log('### prevZoom', prevZoom)
+
   const getUserLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -62,13 +60,10 @@ const MapComponent = (props: MapProps) => {
       });
   }, [category]);
 
-
-  const defaultCenter = prevCenter
-    ? prevCenter
-    : {
-        lat: userLocation?.latitude ?? DEFAULT_LAT,
-        lng: userLocation?.longitude ?? DEFAULT_LNG,
-      };
+  const defaultCenter = {
+    lat: userLocation?.latitude ?? DEFAULT_LAT,
+    lng: userLocation?.longitude ?? DEFAULT_LNG,
+  };
 
   return (
     <div className={"h-svh relative bg-white"}>
@@ -95,14 +90,11 @@ const MapComponent = (props: MapProps) => {
             <Map
               className={"h-full"}
               defaultCenter={defaultCenter}
-              onZoomChanged={(zoom) => {
-                zoom.detail.zoom && setPrevZoom(zoom.detail.zoom);
-                zoom.detail.center && setPrevCenter(zoom.detail.center);
+              onClick={(ev) => {
+                console.log("latitide = ", ev);
+                console.log("longitude = ", ev);
               }}
-              onClick={ev => {
-                  console.log("latitide = ", ev);
-                  console.log("longitude = ", ev);
-              }}              defaultZoom={prevZoom ?? 13}
+              defaultZoom={13}
               mapId={process.env.REACT_APP_GOOGLE_MAP_ID}
               disableDefaultUI
             >
