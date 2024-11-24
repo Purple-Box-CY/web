@@ -6,6 +6,7 @@ import { ClusteredMarkers } from "./clusteredMarkers";
 import { service } from "../../api/services";
 import { CollectionCategory, IMapItem } from "../../data/map";
 import { useLocation } from "react-router";
+import { CircularProgress } from "@mui/material";
 
 interface MapProps {}
 
@@ -23,8 +24,10 @@ const MapComponent = (props: MapProps) => {
   const [category, setCategory] = React.useState<CollectionCategory | null>(
     location.state?.filterCategory || null, // Устанавливаем начальное значение категории
   );
-  console.log('category', category)
-
+  const [loading, setLoading] = useState<boolean>(false);
+  const [prevZoom, setPrevZoom] = useState<number>();
+  const [prevCenter, setPrevCenter] = useState<any>();
+  // console.log('### prevZoom', prevZoom)
   const getUserLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -48,14 +51,30 @@ const MapComponent = (props: MapProps) => {
   }, []);
 
   useEffect(() => {
-    console.log(category)
-    service.getMarkers(category).then((res) => {
-      setMapItems(res.data.items);
-    });
+    setLoading(true);
+    service
+      .getMarkers(category)
+      .then((res) => {
+        setMapItems(res.data.items);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [category]);
 
+  const handleMapClick = (e: any) => {
+    // Получение широты и долготы из события
+  };
+
+  const defaultCenter = prevCenter
+    ? prevCenter
+    : {
+        lat: userLocation?.latitude ?? DEFAULT_LAT,
+        lng: userLocation?.longitude ?? DEFAULT_LNG,
+      };
+
   return (
-    <div className={"h-svh relative"}>
+    <div className={"h-svh relative bg-white"}>
       <div className={"absolute z-10 top-4 left-2 right-2"}>
         <Filter category={category} setCategory={setCategory} />
       </div>
@@ -65,30 +84,44 @@ const MapComponent = (props: MapProps) => {
           apiKey={process.env.REACT_APP_GOOGLE_MAP_KEY}
           version={"beta"}
         >
-          <Map
-            className={"h-full"}
-            defaultCenter={{
-              lat: userLocation?.latitude ?? DEFAULT_LAT,
-              lng: userLocation?.longitude ?? DEFAULT_LNG,
-            }}
-            defaultZoom={13}
-            mapId={process.env.REACT_APP_GOOGLE_MAP_ID}
-            disableDefaultUI
-          >
-            {mapItems.map((item, index) => {
-              return (
-                <div key={item.uid}>
-                  <ClusteredMarkers mapItems={mapItems} />
-                </div>
-              );
-            })}
-            <CurrentLocationMarker
-              width={24}
-              height={24}
-              longitude={userLocation?.longitude ?? DEFAULT_LNG}
-              latitude={userLocation?.latitude ?? DEFAULT_LAT}
+          {loading ? (
+            <CircularProgress
+              sx={{
+                color: "#A531B5",
+                left: "50%",
+                top: "50%",
+                position: "absolute",
+                transform: "translate(-50%, -50%)",
+              }}
             />
-          </Map>
+          ) : (
+            <Map
+              className={"h-full"}
+              defaultCenter={defaultCenter}
+              onZoomChanged={(zoom) => {
+                zoom.detail.zoom && setPrevZoom(zoom.detail.zoom);
+                zoom.detail.center && setPrevCenter(zoom.detail.center);
+              }}
+              onClick={handleMapClick}
+              defaultZoom={prevZoom ?? 13}
+              mapId={process.env.REACT_APP_GOOGLE_MAP_ID}
+              disableDefaultUI
+            >
+              {mapItems.map((item, index) => {
+                return (
+                  <div key={item.uid}>
+                    <ClusteredMarkers mapItems={mapItems} />
+                  </div>
+                );
+              })}
+              <CurrentLocationMarker
+                width={24}
+                height={24}
+                longitude={userLocation?.longitude ?? DEFAULT_LNG}
+                latitude={userLocation?.latitude ?? DEFAULT_LAT}
+              />
+            </Map>
+          )}
         </APIProvider>
       )}
     </div>
