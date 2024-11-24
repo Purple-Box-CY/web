@@ -5,7 +5,7 @@ export enum CollectionCategory {
   Cloth = "cloth",
   Electronic = "electronic",
   Battery = "battery",
-  GreenPoint = "greenPoint",
+  GreenPoint = "green_point",
   Multibox = "multibox",
 }
 

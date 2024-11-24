@@ -1,12 +1,13 @@
 import { publicApi, publicApi2 } from "./api";
+import { CollectionCategory } from "../data/map";
 
 export const service = {
   getArticleItem: async (alias: string) => {
     return await publicApi.get(`/articles/${alias}`);
   },
 
-  getMarkers: async () => {
-    return await publicApi.get(`/markers`);
+  getMarkers: async (category: CollectionCategory | null) => {
+    return await publicApi.get(`/markers?type=${category}`);
   },
 };
 
