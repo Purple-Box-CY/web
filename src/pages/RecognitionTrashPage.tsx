@@ -117,6 +117,7 @@ const RecognitionTrash: React.FC = () => {
         height: "calc(var(--real-vh, 1vh) * 100)",
         backgroundColor: "black",
         overflow: "hidden",
+        maxWidth: "500px",
       }}
     >
       {/* Камера или фото */}
@@ -406,7 +407,11 @@ const RecognitionTrash: React.FC = () => {
                   width: "calc(100% - 40px)", // Отступы по бокам
                   maxWidth: "400px", // Ограничение ширины кнопки
                 }}
-                onClick={() => navigate('/', { state: { filterCategory: result.toLowerCase() } })}
+                onClick={() =>
+                  navigate("/", {
+                    state: { filterCategory: result.toLowerCase() },
+                  })
+                }
               >
                 Find on map
               </button>

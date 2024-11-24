@@ -117,6 +117,7 @@ const RecognitionBox: React.FC = () => {
         height: "calc(var(--real-vh, 1vh) * 100)",
         backgroundColor: "black",
         overflow: "hidden",
+        maxWidth: "500px",
       }}
     >
       {/* Камера или фото */}
