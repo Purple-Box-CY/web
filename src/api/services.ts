@@ -1,4 +1,4 @@
-import { publicApi } from "./api";
+import {publicApi, publicApi2} from "./api";
 
 export const service = {
   getArticleItem: async (alias: string) => {
@@ -30,7 +30,7 @@ export const camera = {
     const formData = new FormData();
     formData.append("file", imageBlob, "image.jpg");
 
-    return await publicApi.post("/camera/box", formData, {
+    return await publicApi2.post("/camera/box", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
