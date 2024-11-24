@@ -46,7 +46,7 @@ const MapComponent = (props: MapProps) => {
   }, []);
 
   useEffect(() => {
-    service.getMarkers().then((res) => {
+    service.getMarkers(category).then((res) => {
       setMapItems(res.data.items);
     });
   }, [category]);
