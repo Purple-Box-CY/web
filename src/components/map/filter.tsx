@@ -39,17 +39,19 @@ const names: CollectionCategory[] = [
   CollectionCategory.Battery,
 ];
 
-export default function MultipleSelectChip() {
-  const [categories, setCategories] = React.useState<string[]>([]);
+interface FilterProps {
+  category: CollectionCategory | null;
+  setCategory: React.Dispatch<React.SetStateAction<CollectionCategory | null>>;
+}
 
-  const handleChange = (event: SelectChangeEvent<typeof categories>) => {
+export default function Filter(props: FilterProps) {
+  const { category, setCategory } = props;
+
+  const handleChange = (event: SelectChangeEvent<typeof category>) => {
     const {
       target: { value },
     } = event;
-    setCategories(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value,
-    );
+    setCategory(value as CollectionCategory);
   };
 
   const renderMarker = (type: CollectionCategory) => {
@@ -76,7 +78,7 @@ export default function MultipleSelectChip() {
   return (
     <div className={""}>
       <FormControl className={"w-full "}>
-        {categories.length > 0 && (
+        {category && (
           <div
             className={
               "absolute right-[24px] z-10 top-1/2 -translate-y-1/2 w-[32px] h-[32px] flex justify-center items-center"
@@ -84,7 +86,7 @@ export default function MultipleSelectChip() {
           >
             <Close
               onClick={() => {
-                setCategories([]);
+                setCategory(null);
               }}
             />
           </div>
@@ -95,22 +97,17 @@ export default function MultipleSelectChip() {
           className={"bg-white w-full"}
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
-          multiple
-          value={categories}
+          value={category}
           onChange={handleChange}
           input={
             <OutlinedInput id="select-multiple-chip" label="Select your box" />
           }
           renderValue={(selected) => (
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-              {selected.map((value) => {
-                return (
-                  <div key={value} className={"flex"}>
-                    {renderMarker(value as CollectionCategory)}
-                    <Chip key={value} label={value} />
-                  </div>
-                );
-              })}
+              <div key={category} className={"flex"}>
+                {renderMarker(category as CollectionCategory)}
+                <Chip key={category} label={category} />
+              </div>
             </Box>
           )}
           MenuProps={MenuProps}
