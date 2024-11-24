@@ -1,7 +1,44 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import Webcam from 'react-webcam';
-import { ReactComponent as CancelIcon } from '../assets/close.svg';
-import { ReactComponent as CheckIcon } from '../assets/approve.svg';
+import {ReactComponent as CancelIcon} from '../assets/close.svg';
+import {ReactComponent as CheckIcon} from '../assets/approve.svg';
+import {ReactComponent as CheckSmallIcon} from '../assets/close_small.svg';
+import {ReactComponent as RecogniteIcon} from '../assets/recognite.svg';
+import {camera} from "../api/services";
+import {useNavigate} from "react-router-dom";
+import {ReactComponent as PaperMarkerIcon} from "../assets/paper.svg";
+import {ReactComponent as PlasticMarkerIcon} from "../assets/plastic.svg";
+import {ReactComponent as ClothMarkerIcon} from "../assets/cloth.svg";
+import {ReactComponent as ElectronicDevicesMarkerIcon} from "../assets/electronic_devices.svg";
+import {ReactComponent as BatteriesMarkerIcon} from "../assets/batteries.svg";
+import {ReactComponent as GlassMarkerIcon} from "../assets/glass.svg";
+
+enum CollectionCategory {
+    Plastic = 'plastic',
+    Glass = 'glass',
+    Paper = 'paper',
+    Cloth = 'cloth',
+    Electronic = 'electronic',
+    Battery = 'battery',
+    None = 'None',
+}
+
+const renderIcon = (type: CollectionCategory) => {
+    switch (type.toLowerCase()) {
+        case CollectionCategory.Plastic:
+            return <PlasticMarkerIcon style={{width: '32px', height: '32px'}}/>;
+        case CollectionCategory.Glass:
+            return <GlassMarkerIcon style={{width: '32px', height: '32px'}}/>;
+        case CollectionCategory.Paper:
+            return <PaperMarkerIcon style={{width: '32px', height: '32px'}}/>;
+        case CollectionCategory.Cloth:
+            return <ClothMarkerIcon style={{width: '32px', height: '32px'}}/>;
+        case CollectionCategory.Electronic:
+            return <ElectronicDevicesMarkerIcon style={{width: '32px', height: '32px'}}/>;
+        case CollectionCategory.Battery:
+            return <BatteriesMarkerIcon style={{width: '32px', height: '32px'}}/>;
+    }
+};
 
 const RecognitionBox: React.FC = () => {
     const webcamRef = useRef<Webcam | null>(null);
@@ -9,6 +46,9 @@ const RecognitionBox: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false); // Состояние загрузки
     const [photo, setPhoto] = useState<string | null>(null); // Сохранённая фотография
     const [result, setResult] = useState<string | null>(null); // Результат запроса
+    const [value, setValue] = useState<string | null>(null); // Результат запроса
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const setRealVH = () => {
@@ -28,40 +68,43 @@ const RecognitionBox: React.FC = () => {
         if (webcamRef.current) {
             const imageSrc = webcamRef.current.getScreenshot();
             if (imageSrc) {
-                setPhoto(imageSrc); // Сохраняем фотографию
-                setIsModalOpen(true); // Открываем модалку
-                setIsLoading(true); // Включаем лоадер
+                setPhoto(imageSrc);
+                setIsModalOpen(true);
+                setIsLoading(true);
 
                 try {
-                    const response = await fetch('http://your-backend-url/api', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ image: imageSrc }),
-                    });
+                    const formData = new FormData();
+                    formData.append("image", imageSrc);
 
-                    if (response.ok) {
-                        const data = await response.json();
-                        setResult(data.result); // Устанавливаем результат
+
+                    const response = await camera.getRecognitionItem(imageSrc);
+                    console.log('response', response)
+                    if (response?.data) {
+                        console.log(response.data.data)
+                        setResult(response.data.data.category);
+                        setValue(response.data.data.value)
                     } else {
-                        console.error('Error from backend:', response.statusText);
+                        console.error("Error from backend: Invalid response");
                     }
                 } catch (error) {
-                    console.error('Error:', error);
+                    console.error("Error:", error);
                 } finally {
-                    setIsLoading(false); // Отключаем лоадер
+                    setIsLoading(false);
                 }
             }
         }
     };
 
+
     const closeModal = () => {
-        setIsModalOpen(false); // Закрываем модалку
-        setPhoto(null); // Сбрасываем фотографию
-        setResult(null); // Сбрасываем результат
+        setIsModalOpen(false);
+        setPhoto(null);
+        setResult(null);
     };
 
     const retakePhoto = () => {
-        setPhoto(null); // Убираем текущую фотографию
+        setPhoto(null);
+        navigate('/');
     };
 
     return (
@@ -93,6 +136,9 @@ const RecognitionBox: React.FC = () => {
                     audio={false}
                     ref={webcamRef}
                     screenshotFormat="image/jpeg"
+                    videoConstraints={{
+                        facingMode: "environment",
+                    }}
                     style={{
                         position: 'absolute',
                         top: 0,
@@ -135,7 +181,6 @@ const RecognitionBox: React.FC = () => {
                 {photo ? 'REVIEW YOUR PHOTO' : 'TAKE A PHOTO OF THE BOX'}
             </div>
 
-            {/* Кнопки */}
             {!isModalOpen && (
                 <div
                     style={{
@@ -165,7 +210,7 @@ const RecognitionBox: React.FC = () => {
                         }}
                         onClick={retakePhoto}
                     >
-                        <CancelIcon width="32px" height="32px" fill="white" />
+                        <CancelIcon width="32px" height="32px" fill="white"/>
                     </button>
 
                     <button
@@ -183,12 +228,11 @@ const RecognitionBox: React.FC = () => {
                         }}
                         onClick={capturePhoto}
                     >
-                        <CheckIcon width="32px" height="32px" />
+                        <CheckIcon width="32px" height="32px"/>
                     </button>
                 </div>
             )}
 
-            {/* Модалка */}
             {isModalOpen && (
                 <div
                     style={{
@@ -196,7 +240,7 @@ const RecognitionBox: React.FC = () => {
                         bottom: 0,
                         left: 0,
                         width: '100%',
-                        height: '50%',
+                        height: '60%',
                         backgroundColor: 'white',
                         borderTopLeftRadius: '20px',
                         borderTopRightRadius: '20px',
@@ -209,39 +253,141 @@ const RecognitionBox: React.FC = () => {
                         boxSizing: 'border-box',
                     }}
                 >
-                    {/* Кнопка закрытия */}
                     <button
                         style={{
                             position: 'absolute',
                             top: '10px',
                             right: '10px',
-                            width: '32px',
-                            height: '32px',
+                            width: '40px',
+                            height: '40px',
                             border: 'none',
                             background: 'transparent',
                             cursor: 'pointer',
                         }}
                         onClick={closeModal}
                     >
-                        <CancelIcon width="32px" height="32px" fill="black" />
+                        <CheckSmallIcon width="40px" height="40px" fill="black"/>
                     </button>
 
                     {isLoading ? (
                         <div
                             style={{
-                                width: '50px',
-                                height: '50px',
-                                border: '4px solid #ccc',
-                                borderTop: '4px solid #000',
-                                borderRadius: '50%',
-                                animation: 'spin 1s linear infinite',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                gap: '20px',
                             }}
-                        ></div>
-                    ) : (
-                        <div>
-                            <h3>Result</h3>
-                            <p>{result || 'No result available'}</p>
+                        >
+                            <RecogniteIcon width="60px" height="60px"/>
+
+                            <p
+                                style={{
+                                    fontFamily: 'Inter, sans-serif',
+                                    fontWeight: 700,
+                                    fontSize: '24px',
+                                    lineHeight: '40px',
+                                    color: '#333',
+                                    textAlign: 'center',
+                                }}
+                            >
+                                One moment...
+                            </p>
+
+                            <div
+                                style={{
+                                    width: '60px',
+                                    height: '60px',
+                                    border: '6px solid #ccc',
+                                    borderTop: '6px solid #000',
+                                    borderRadius: '50%',
+                                    animation: 'spin 1s linear infinite',
+                                }}
+                            ></div>
                         </div>
+                    ) : (
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                gap: '10px',
+                            }}
+                        >
+                            <RecogniteIcon width="60px" height="60px"/>
+                            <p
+                                style={{
+                                    fontFamily: 'Inter, sans-serif',
+                                    fontWeight: 700,
+                                    fontSize: '24px',
+                                    lineHeight: '40px',
+                                    color: '#333',
+                                    textAlign: 'center',
+                                }}
+                            >
+                                My answer is
+                            </p>
+
+                            {result === CollectionCategory.None || !result ? (
+                                <p
+                                    style={{
+                                        fontFamily: 'Inter, sans-serif',
+                                        fontWeight: 700,
+                                        fontSize: '24px',
+                                        lineHeight: '40px',
+                                        color: '#000',
+                                        textAlign: 'center',
+                                    }}
+                                >
+                                    I don't recognize the box in the photo
+                                </p>
+                            ) : (
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '10px',
+                                    }}
+                                >
+                                    {renderIcon(result as CollectionCategory)}
+                                    <p
+                                        style={{
+                                            fontFamily: 'Inter, sans-serif',
+                                            fontWeight: 700,
+                                            fontSize: '24px',
+                                            lineHeight: '40px',
+                                            color: '#000',
+                                            textAlign: 'center',
+                                        }}
+                                    >
+                                        {result}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+
+                    )}
+                    {result && result !== 'None' && (
+                        <button
+                            style={{
+                                marginTop: '10px',
+                                padding: '10px 20px',
+                                fontFamily: 'Inter, sans-serif',
+                                fontWeight: 700,
+                                fontSize: '16px',
+                                color: 'white',
+                                backgroundColor: '#4A90E2', // Синий цвет
+                                border: 'none',
+                                borderRadius: '8px',
+                                cursor: 'pointer',
+                                textAlign: 'center',
+                            }}
+                            onClick={() => navigate(`/info/${value}`)}
+                        >
+                            Read more
+                        </button>
                     )}
                 </div>
             )}
