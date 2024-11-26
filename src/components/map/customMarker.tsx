@@ -11,6 +11,18 @@ import { ReactComponent as GlassMarkerIcon } from "../../assets/glass.svg";
 import { ReactComponent as GreenPointsMarkerIcon } from "../../assets/green_points.svg";
 import { ReactComponent as MultiboxMarkerIcon } from "../../assets/multibox.svg";
 
+export const iconMapping = {
+  [CollectionCategory.Paper]: <PaperMarkerIcon />,
+  [CollectionCategory.Plastic]: <PlasticMarkerIcon />,
+  [CollectionCategory.Electronic]: <ElectronicDevicesMarkerIcon />,
+  [CollectionCategory.Cloth]: <ClothMarkerIcon />,
+  [CollectionCategory.Multibox]: <MultiboxMarkerIcon />,
+  [CollectionCategory.Glass]: <GlassMarkerIcon />,
+  [CollectionCategory.GreenPoint]: <GreenPointsMarkerIcon />,
+  [CollectionCategory.Battery]: <BatteriesMarkerIcon />,
+};
+
+
 export type CustomMarkerProps = {
   mapItem: IMapItem;
   onClick: (mapItem: IMapItem) => void;

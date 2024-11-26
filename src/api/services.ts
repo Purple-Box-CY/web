@@ -13,6 +13,16 @@ export const service = {
   getMarkerItem: async (markerId: string) => {
     return await publicApi.get(`/markers/${markerId}`);
   },
+
+  addMarker: async (markerData: {
+    type: CollectionCategory;
+    description: string;
+    latitude: string;
+    longitude: string;
+  }) => {
+    return await publicApi.post(`/markers`, markerData);
+  },
+
 };
 
 export const camera = {
